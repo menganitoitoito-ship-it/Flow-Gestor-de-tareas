@@ -28,6 +28,33 @@
 }
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-family:var(--font);font-size:15px;line-height:1.6}
 
+/* ── LIGHT THEME ── */
+[data-theme="light"]{--bg:#f5f7fa;--s1:#ffffff;--s2:#f0f2f5;--s3:#e8ebf0;--s4:#d0d5dd;--border:#d0d5dd;--border2:#b0b7c3;--t1:#1a1d23;--t2:#4a4f5a;--t3:#8b92a0;--accent:#7c5cfc;--accent2:#6a4be0;--accent-soft:rgba(124,92,252,.1);--accent-glow:rgba(124,92,252,.2);--sh:0 2px 16px rgba(0,0,0,.08);--sh2:0 8px 40px rgba(0,0,0,.12)}
+[data-theme="light"] .sidebar{background:var(--s1);border-color:var(--border)}
+[data-theme="light"] .sb-item:hover{background:var(--s3)}
+[data-theme="light"] .sb-proj-item:hover{background:var(--s3)}
+[data-theme="light"] .stat-card{background:var(--s1)}
+[data-theme="light"] .dash-card{background:var(--s1)}
+[data-theme="light"] .chart-card{background:var(--s1)}
+[data-theme="light"] .ai-card{background:var(--s1)}
+[data-theme="light"] .proj-card{background:var(--s1)}
+[data-theme="light"] .kanban-col{background:var(--s2)}
+[data-theme="light"] .kanban-card{background:var(--s1)}
+[data-theme="light"] .modal{background:var(--s1)}
+[data-theme="light"] .detail-panel{background:var(--s1)}
+[data-theme="light"] .sb-search{background:var(--s2)}
+[data-theme="light"] .view-switcher{background:var(--s2)}
+[data-theme="light"] .vs-btn.active{background:var(--s4);color:var(--t1)}
+[data-theme="light"] .form-input,.form-select,.form-textarea{background:var(--s2)}
+[data-theme="light"] .tag-input-wrap{background:var(--s2)}
+[data-theme="light"] .note-card{background:var(--s1)}
+[data-theme="light"] .habit-card{background:var(--s1)}
+[data-theme="light"] .tmpl-card{background:var(--s1)}
+[data-theme="light"] .dp-notes{background:var(--s2)}
+[data-theme="light"] .empty-state,.kanban-column{background:var(--s2)}
+[data-theme="light"] .board-add{color:var(--t2)}
+[data-theme="light"] .topbar{background:var(--s1)}
+
 /* ── SCROLLBAR ── */
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -36,6 +63,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
 /* ── LAYOUT ── */
 .app{display:flex;height:100vh;overflow:hidden}
 .sidebar{width:var(--sidebar);min-width:var(--sidebar);background:var(--s1);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transition:width .3s,min-width .3s}
+.sidebar > .sb-section:last-of-type{flex:1;min-height:0}
+.sb-proj-section{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.sb-proj-section .sb-projects{flex:1;overflow-y:auto;min-height:0}
 .sidebar.collapsed{width:0;min-width:0}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative}
 
@@ -70,6 +100,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
 .sb-proj-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .sb-proj-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sb-proj-count{font-size:11px;color:var(--t3)}
+.sb-proj-open{font-size:13px;color:var(--t3);padding:2px 4px;border-radius:4px;cursor:pointer;transition:all .15s;display:none;line-height:1}
+.sb-proj-item:hover .sb-proj-open{display:inline-block}
+.sb-proj-open:hover{color:var(--accent2);background:var(--s4)}
 .sb-proj-add{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:var(--rsm);cursor:pointer;font-size:13px;color:var(--t3);transition:all .15s;margin-top:2px}
 .sb-proj-add:hover{color:var(--t1)}
 
@@ -340,6 +373,62 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
 .progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:6px}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1)}
 
+/* ── PROJECTS GRID ── */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.proj-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--rmd);padding:16px;cursor:pointer;transition:all .2s;display:grid;gap:10px}
+.proj-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--sh)}
+.proj-card-header{display:flex;align-items:center;gap:10px}
+.proj-card-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.proj-card-name{font-size:15px;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.proj-card-desc{font-size:12px;color:var(--t2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.proj-card-meta{display:flex;gap:4px;flex-wrap:wrap}
+.proj-card-tag{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600}
+.proj-card-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.proj-card-btn{font-size:11px;padding:4px 10px;border-radius:6px;background:var(--s3);border:1px solid var(--border);color:var(--t2);cursor:pointer;text-decoration:none;transition:all .15s;font-family:var(--font);font-weight:500}
+.proj-card-btn:hover{border-color:var(--border2);color:var(--t1)}
+.proj-card-progress{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.proj-card-progress-fill{height:100%;border-radius:2px;transition:width .5s}
+
+/* ── THEME TOGGLE ── */
+.theme-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--s2);color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .15s;flex-shrink:0}
+.theme-btn:hover{border-color:var(--border2);color:var(--t1)}
+
+/* ── CHARTS ── */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:0}
+@media(max-width:800px){.chart-grid{grid-template-columns:1fr}}
+.chart-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--rmd);padding:16px}
+.chart-card-title{font-size:12px;font-weight:700;color:var(--t2);margin-bottom:10px;letter-spacing:.04em;text-transform:uppercase}
+.chart-card canvas{width:100%;border-radius:var(--rsm)}
+
+/* ── AI ── */
+.ai-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--rmd);padding:18px;transition:all .2s}
+.ai-card:hover{border-color:var(--border2)}
+.ai-card-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ai-card-icon{width:32px;height:32px;border-radius:8px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ai-card-title{font-size:15px;font-weight:700}
+.ai-card-desc{font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:10px}
+.ai-card-meta{font-size:11px;color:var(--t3);display:flex;gap:10px;flex-wrap:wrap}
+.ai-card-tag{background:var(--s3);border-radius:20px;padding:2px 8px;font-size:11px;font-weight:600}
+.ai-loading{display:flex;align-items:center;justify-content:center;padding:40px;gap:10px;color:var(--t3);font-size:14px}
+.ai-loading-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:aiBounce .8s infinite}
+.ai-loading-dot:nth-child(2){animation-delay:.15s}
+.ai-loading-dot:nth-child(3){animation-delay:.3s}
+@keyframes aiBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* ── KANBAN DND ── */
+.kanban-card.dragging{opacity:.5;transform:scale(.95)}
+.kanban-col.drag-over{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.kanban-card .drag-handle{display:none;position:absolute;top:4px;right:4px;font-size:12px;color:var(--t3);cursor:grab}
+.kanban-card:hover .drag-handle{display:block}
+
+/* ── TAGS ── */
+.tag-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;border:1px solid transparent}
+.tag-chip:hover{opacity:.8}
+.tag-input-wrap{display:flex;flex-wrap:wrap;gap:6px;padding:6px 10px;background:var(--s3);border:1.5px solid var(--border);border-radius:var(--rsm);cursor:text;min-height:38px}
+.tag-input-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.tag-input{background:none;border:none;outline:none;color:var(--t1);font-family:var(--font);font-size:13px;min-width:80px;flex:1}
+.tag-input::placeholder{color:var(--t3)}
+
 /* ── RESPONSIVE ── */
 @media(max-width:700px){
   :root{--sidebar:0px}
@@ -388,11 +477,14 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
   <!-- ══ SIDEBAR ══ -->
   <aside class="sidebar" id="sidebar">
     <div class="sb-top">
-      <div class="sb-brand">
+      <div class="sb-brand" onclick="navigate('dashboard')" style="cursor:pointer">
         <div class="sb-brand-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
         </div>
-        <span class="sb-brand-name">Fl<span>ow</span></span>
+        <div>
+          <span class="sb-brand-name">Fl<span>ow</span> Hub</span>
+          <span style="font-size:10px;color:var(--t3);display:block;margin-top:-2px;font-weight:500">Project OS · Laboratorio personal</span>
+        </div>
       </div>
       <button class="sb-quick" onclick="openQuickAdd()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -429,8 +521,27 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
         <span class="sb-item-ico">🗂</span> Plantillas
       </div>
     </div>
+    <div class="sb-section" style="flex-shrink:0">
+      <div class="sb-item" id="nav-projects" onclick="navigate('projects')">
+        <span class="sb-item-ico">🗂</span> Todos los proyectos
+      </div>
+    </div>
+    <div class="sb-section" style="flex-shrink:0">
+      <div class="sb-label">Analítica</div>
+      <div class="sb-item" id="nav-calendar" onclick="navigate('calendar')">
+        <span class="sb-item-ico">📅</span> Calendario
+      </div>
+      <div class="sb-item" id="nav-charts" onclick="navigate('charts')">
+        <span class="sb-item-ico">📊</span> Gráficas
+        <span class="sb-item-badge">Nuevo</span>
+      </div>
+      <div class="sb-item" id="nav-ai" onclick="navigate('ai')">
+        <span class="sb-item-ico">🤖</span> IA Plan
+        <span class="sb-item-badge">Nuevo</span>
+      </div>
+    </div>
 
-    <div class="sb-section" style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+    <div class="sb-section sb-proj-section">
       <div class="sb-label">Proyectos</div>
       <div class="sb-projects" id="projectsList"></div>
       <div class="sb-proj-add" onclick="openNewProject()">
@@ -439,10 +550,11 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
       </div>
     </div>
 
-    <div class="sb-bottom">
-      <div class="sb-item" onclick="openSettings()">
+    <div class="sb-bottom" style="display:flex;align-items:center;gap:6px;padding:8px 14px">
+      <div class="sb-item" onclick="openSettings()" style="flex:1">
         <span class="sb-item-ico">⚙️</span> Ajustes
       </div>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Cambiar tema">🌙</button>
     </div>
   </aside>
 
@@ -504,6 +616,14 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
               <div class="dash-card-body" id="dashProgress"></div>
             </div>
           </div>
+        </div>
+        <!-- Smart Queue -->
+        <div class="dash-card" style="margin-top:14px">
+          <div class="dash-card-head">
+            <div class="dash-card-title">🎯 Cola inteligente</div>
+            <span class="dash-card-action" onclick="navigate('inbox')">Ver todo</span>
+          </div>
+          <div class="dash-card-body" id="smartQueue"></div>
         </div>
       </div>
     </div>
@@ -584,9 +704,70 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
       <div class="view-scroll" id="templatesContent"></div>
     </div>
 
+    <!-- ── ALL PROJECTS VIEW ── -->
+    <div class="view" id="view-projects">
+      <div class="view-scroll">
+        <div style="font-size:22px;font-weight:800;margin-bottom:4px">🗂 Todos los proyectos</div>
+        <div style="font-size:13px;color:var(--t2);margin-bottom:16px" id="projectsCount">${state.projects.length} proyectos en total</div>
+        <div style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap" id="projectsFilterBar">
+          <button class="filter-chip active" onclick="filterProjectsGrid('all',this)">Todos</button>
+          <button class="filter-chip" onclick="filterProjectsGrid('Activo',this)">Activos</button>
+          <button class="filter-chip" onclick="filterProjectsGrid('Prototipo',this)">Prototipos</button>
+          <button class="filter-chip" onclick="filterProjectsGrid('En pausa',this)">En pausa</button>
+          <button class="filter-chip" onclick="filterProjectsGrid('Lanzado',this)">Lanzados</button>
+        </div>
+        <div class="proj-grid" id="projectsGrid"></div>
+      </div>
+    </div>
+
     <!-- ── CALENDAR (STANDALONE) ── -->
     <div class="view" id="view-calendar">
       <div class="view-scroll" id="calendarContent"></div>
+    </div>
+
+    <!-- ── CHARTS VIEW ── -->
+    <div class="view" id="view-charts">
+      <div class="view-scroll">
+        <div style="font-size:22px;font-weight:800;margin-bottom:4px">📊 Productividad</div>
+        <div style="font-size:13px;color:var(--t2);margin-bottom:20px">Gráficas y estadísticas de tu progreso</div>
+        <div class="chart-grid" id="chartsGrid">
+          <div class="chart-card" id="chartTasks">
+            <div class="chart-card-title">Tareas completadas (últimos 7 días)</div>
+            <canvas id="chartTasksCanvas" height="200"></canvas>
+          </div>
+          <div class="chart-card" id="chartProjects">
+            <div class="chart-card-title">Proyectos por estado</div>
+            <canvas id="chartProjectsCanvas" height="200"></canvas>
+          </div>
+          <div class="chart-card" id="chartPriority">
+            <div class="chart-card-title">Prioridad de tareas</div>
+            <canvas id="chartPriorityCanvas" height="200"></canvas>
+          </div>
+          <div class="chart-card" id="chartProductivity">
+            <div class="chart-card-title">Rendimiento semanal</div>
+            <canvas id="chartProductivityCanvas" height="200"></canvas>
+          </div>
+        </div>
+        <div class="chart-grid" style="margin-top:18px;grid-template-columns:1fr 1fr">
+          <div class="chart-card">
+            <div class="chart-card-title">Estadísticas rápidas</div>
+            <div id="chartStats" style="padding:10px 0"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-card-title">Distribución de proyectos</div>
+            <div id="chartProjectBreakdown" style="padding:10px 0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AI PLANNING VIEW ── -->
+    <div class="view" id="view-ai">
+      <div class="view-scroll">
+        <div style="font-size:22px;font-weight:800;margin-bottom:4px">🤖 Asistente IA</div>
+        <div style="font-size:13px;color:var(--t2);margin-bottom:20px">Agente organizador con IA — revisa proyectos, planifica el día, prioriza tareas</div>
+        <div id="aiResults" style="display:grid;gap:14px"></div>
+      </div>
     </div>
 
   </div><!-- /main -->
@@ -617,6 +798,11 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
     </div>
 
     <div class="dp-section">
+      <div class="dp-label">Etiquetas</div>
+      <div id="dpTags" class="tag-input-wrap"></div>
+    </div>
+
+    <div class="dp-section">
       <div class="dp-label">Notas</div>
       <div class="dp-notes" id="dpNotes" contenteditable="true" oninput="saveTaskDetail('notes',this.innerHTML)"></div>
     </div>
@@ -639,7 +825,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
 
 <!-- ══ OVERLAYS ══ -->
 <!-- Quick Add -->
-<div class="overlay" id="overlayQuickAdd" onclick="e=>e.target===this&&closeOverlay('overlayQuickAdd')">
+<div class="overlay" id="overlayQuickAdd" onclick="if(event.target===this)closeOverlay('overlayQuickAdd')">
   <div class="modal">
     <div class="modal-title">Añadir tarea <button class="modal-close" onclick="closeOverlay('overlayQuickAdd')">✕</button></div>
     <div class="form-group">
@@ -676,7 +862,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
 </div>
 
 <!-- New Project -->
-<div class="overlay" id="overlayNewProject" onclick="e=>e.target===this&&closeOverlay('overlayNewProject')">
+<div class="overlay" id="overlayNewProject" onclick="if(event.target===this)closeOverlay('overlayNewProject')">
   <div class="modal">
     <div class="modal-title">Nuevo proyecto <button class="modal-close" onclick="closeOverlay('overlayNewProject')">✕</button></div>
     <div class="form-group">
@@ -698,7 +884,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
 </div>
 
 <!-- New Habit -->
-<div class="overlay" id="overlayNewHabit" onclick="e=>e.target===this&&closeOverlay('overlayNewHabit')">
+<div class="overlay" id="overlayNewHabit" onclick="if(event.target===this)closeOverlay('overlayNewHabit')">
   <div class="modal">
     <div class="modal-title">Nuevo hábito <button class="modal-close" onclick="closeOverlay('overlayNewHabit')">✕</button></div>
     <div class="form-group">
@@ -730,7 +916,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
 </div>
 
 <!-- Search -->
-<div class="overlay" id="overlaySearch" onclick="e=>e.target===this&&closeOverlay('overlaySearch')">
+<div class="overlay" id="overlaySearch" onclick="if(event.target===this)closeOverlay('overlaySearch')">
   <div class="modal" style="max-width:580px">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--t2)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -742,14 +928,36 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
 </div>
 
 <!-- Settings -->
-<div class="overlay" id="overlaySettings" onclick="e=>e.target===this&&closeOverlay('overlaySettings')">
+<div class="overlay" id="overlaySettings" onclick="if(event.target===this)closeOverlay('overlaySettings')">
   <div class="modal">
     <div class="modal-title">Ajustes <button class="modal-close" onclick="closeOverlay('overlaySettings')">✕</button></div>
     <div class="form-group">
       <label class="form-label">Tu nombre</label>
       <input class="form-input" id="settingName" placeholder="¿Cómo te llamas?" oninput="saveSettings()">
     </div>
-    <div class="form-group" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+    <div class="form-group" style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <div class="form-label" style="font-size:13px;display:flex;align-items:center;gap:6px">🤖 Agente IA</div>
+      <div class="form-row" style="margin-top:8px">
+        <div class="form-group">
+          <label class="form-label">Proveedor</label>
+          <select class="form-select" id="settingAIProvider" onchange="onAIProviderChange()">
+            <option value="openrouter">OpenRouter (recomendado)</option>
+            <option value="groq">Groq</option>
+            <option value="gemini">Gemini</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Modelo</label>
+          <select class="form-select" id="settingAIModel" onchange="saveSettings()"></select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">API Key</label>
+        <input class="form-input" id="settingAIKey" type="password" placeholder="sk-..." oninput="saveSettings()" style="font-family:monospace">
+      </div>
+      <div style="font-size:11px;color:var(--t3);margin-top:4px;line-height:1.5">La clave se guarda solo en tu navegador. La API se llama directo desde el navegador. <strong>OpenRouter</strong> es el más compatible (CORS). Groq/Gemini pueden fallar por políticas del navegador.</div>
+    </div>
+    <div class="form-group" style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
       <label class="form-label" style="color:var(--red)">Zona de peligro</label>
       <button class="btn btn-danger" onclick="clearAllData()">🗑 Borrar todos los datos</button>
     </div>
@@ -838,6 +1046,13 @@ function dateOffset(d, offset) {
 }
 function getProject(id) { return state.projects.find(p => p.id === id); }
 function getTask(id) { return state.tasks.find(t => t.id === id); }
+function openProjectLink(id) {
+  const p = getProject(id);
+  if(!p) return;
+  const link = p.link || p.folder;
+  if(link) { window.open(link, '_blank'); showToast(`↗ Abriendo ${esc(p.name)}`); }
+  else showToast('Este proyecto no tiene ruta asignada');
+}
 function getNote(id) { return state.notes.find(n => n.id === id); }
 function taskPrioClass(p) { return ['','tag-p1','tag-p2','tag-p3','tag-p4'][p||4]; }
 function taskPrioLabel(p) { return ['','🔴 Urgente','🟡 Alta','🔵 Normal','⚪'][p||4]; }
@@ -848,8 +1063,96 @@ function showToast(msg, duration=2500) {
 }
 
 /* ══════════════════════════════════════════
+   SEED DATA — Todos los proyectos de Project OS
+═════════════════════════════════════════ */
+const PROJECT_COLORS = ['#7c5cfc','#f05c5c','#f59e0b','#2dd4a0','#60a5fa','#f472b6','#a78bfa','#34d399','#fb923c','#94a3b8','#ec4899','#14b8a6','#8b5cf6','#f97316','#22d3ee'];
+const PROJECT_ICONS_EXT = ['📁','🚀','💼','🎯','🏠','📚','💡','🎨','⚙️','🌟','💰','🏋️','🎵','🌿','🔬','📊','🤖','🧠','🗂','🎮'];
+
+const SEED_PROJECTS = [
+  {id:'p-project-os',name:'Project OS',color:'#7c5cfc',icon:'📁',status:'Activo',progress:40,priority:'Alta',client:'Organización personal',link:'./index.html',folder:'/Users/fjramos8/Project OS',githubLink:'https://github.com/fjramos8/project-os',description:'Sistema operativo personal.',next:'Mantener actualizado el inventario.'},
+  {id:'p-trading-hub-pro',name:'Trading Hub Pro',color:'#2dd4a0',icon:'💰',status:'Activo',progress:72,priority:'Alta',client:'Trading / finanzas',link:'http://localhost:5173',folder:'/Users/fjramos8/Trading Hub Pro',githubLink:'https://github.com/fjramos8/trading-hub-pro',description:'Plataforma de trading con agentes.',next:'Revisar agentes y limpiar scripts de prueba.'},
+  {id:'p-fiscalflow',name:'FiscalFlow Tax Suite',color:'#f59e0b',icon:'📊',status:'Activo',progress:78,priority:'Alta',client:'Finanzas / fiscalidad',folder:'/Users/fjramos8/FiscalFlow',description:'Suite fiscal con servidor local.',next:'Revisar integridad de datos.'},
+  {id:'p-crypto-tax',name:'Crypto-Tax',color:'#f05c5c',icon:'💰',status:'Activo',progress:50,priority:'Alta',client:'Crypto / fiscalidad',folder:'/Users/fjramos8/Crypto-Tax',githubLink:'https://github.com/fjramos8/crypto-tax',description:'Herramienta para impuestos crypto.',next:'Revisar compatibilidad con renta 2025.'},
+  {id:'p-renta-2025',name:'Declaración Renta 2025',color:'#fb923c',icon:'📋',status:'Activo',progress:60,priority:'Alta',client:'Fiscalidad personal',folder:'/Users/fjramos8/Renta 2025',description:'Documentación para la renta 2025.',next:'Cerrar cálculos pendientes.'},
+  {id:'p-nocturnal',name:'The Nocturnal (Music Pro)',color:'#f472b6',icon:'🎵',status:'Activo',progress:85,priority:'Media',client:'Personal / Audio',link:'http://localhost:4000',folder:'/Users/fjramos8/Nocturnal',githubLink:'https://github.com/fjramos8/nocturnal',description:'Reproductor de música avanzado PWA.',next:'Probar widget de música.'},
+  {id:'p-news-intelligence',name:'News Intelligence',color:'#60a5fa',icon:'📰',status:'Prototipo',progress:0,priority:'Media',client:'Personal',folder:'/Users/fjramos8/News Intelligence',description:'Inteligencia de noticias.',next:'Explorar y definir alcance.'},
+  {id:'p-personal-apps',name:'Personal Apps',color:'#a78bfa',icon:'📱',status:'Prototipo',progress:0,priority:'Media',client:'Personal',folder:'/Users/fjramos8/Personal Apps',description:'Aplicaciones personales.',next:'Revisar apps disponibles.'},
+  {id:'p-trading-hub',name:'Trading Hub',color:'#34d399',icon:'📊',status:'Prototipo',progress:0,priority:'Media',client:'Trading',folder:'/Users/fjramos8/Trading Hub',description:'Versión documental de Trading Hub.',next:'Aclarar relación con TH Pro.'},
+  {id:'p-audio-app',name:'Audio App (Audioteka)',color:'#94a3b8',icon:'🎤',status:'Prototipo',progress:0,priority:'Media',client:'Personal',folder:'/Users/fjramos8/Audioteka',description:'Aplicación de audio.',next:'Evaluar estado.'},
+  {id:'p-batchcooking',name:'Batchcooking Firebase',color:'#ec4899',icon:'🍳',status:'Prototipo',progress:0,priority:'Media',client:'Personal',folder:'/Users/fjramos8/Batchcooking',githubLink:'https://github.com/fjramos8/batchcooking',description:'App de batchcooking con Firebase.',next:'Verificar conexión a DB.'},
+  {id:'p-bookshelf',name:'BookShelf',color:'#14b8a6',icon:'📚',status:'Prototipo',progress:0,priority:'Media',client:'Personal',folder:'/Users/fjramos8/BookShelf',description:'Gestión de libros.',next:'Revisar funcionalidades.'},
+  {id:'p-comando-thp',name:'Comando THP',color:'#8b5cf6',icon:'⚙️',status:'Prototipo',progress:0,priority:'Media',client:'Trading',folder:'/Users/fjramos8/Comando THP',description:'Scripts de comandos THP.',next:'Consolidar scripts.'},
+  {id:'p-comandos-terminal',name:'Comandos Terminal',color:'#f97316',icon:'🖥️',status:'Prototipo',progress:0,priority:'Baja',client:'Utilidades',folder:'/Users/fjramos8/Comandos Terminal',description:'Comandos de terminal útiles.',next:'Documentar comandos.'},
+  {id:'p-entrenamiento',name:'Entrenamiento',color:'#22d3ee',icon:'🏋️',status:'Prototipo',progress:0,priority:'Media',client:'Salud',folder:'/Users/fjramos8/Entrenamiento',description:'App de entrenamiento físico.',next:'Revisar contenidos.'},
+  {id:'p-family-calendar',name:'FamilyCalendar',color:'#f472b6',icon:'📅',status:'Activo',progress:55,priority:'Media',client:'Familia',link:'http://localhost:4200',folder:'/Users/fjramos8/FamilyCalendar',description:'Calendario familiar compartido.',next:'Añadir notificaciones.'},
+  {id:'p-fix-total',name:'Fix Total',color:'#94a3b8',icon:'🔧',status:'Prototipo',progress:0,priority:'Media',client:'Personal',folder:'/Users/fjramos8/Fix Total',description:'Herramienta Fix Total.',next:'Definir caso de uso.'},
+  {id:'p-flow-tool',name:'Flow (herramienta)',color:'#2dd4a0',icon:'🌊',status:'Prototipo',progress:0,priority:'Media',client:'Productividad',folder:'/Users/fjramos8/Flow Tool',description:'Aplicación Flow.',next:'Evaluar estado actual.'},
+  {id:'p-ingresos-extra',name:'Ingresos Extra',color:'#f59e0b',icon:'💰',status:'Activo',progress:95,priority:'Alta',client:'Finanzas',folder:'/Users/fjramos8/Ingresos Extra',description:'Dashboard de ingresos adicionales.',next:'Añadir más fuentes de ingresos.'},
+  {id:'p-prototipos-webhub',name:'Prototipos WebHub Pro',color:'#7c5cfc',icon:'🌐',status:'Prototipo',progress:0,priority:'Media',client:'WebHub',folder:'/Users/fjramos8/WebHub Pro',description:'Prototipos WebHub Pro.',next:'Revisar prototipos.'},
+  {id:'p-proyecto-pro',name:'Proyecto Pro Multiherramientas',color:'#a78bfa',icon:'🛠️',status:'Prototipo',progress:0,priority:'Media',client:'Utilidades',folder:'/Users/fjramos8/Proyecto Pro',description:'Plataforma multiherramientas.',next:'Auditar herramientas.'},
+  {id:'p-trading-hub-projects',name:'Trading Hub Pro Projects',color:'#34d399',icon:'📂',status:'Prototipo',progress:0,priority:'Media',client:'Trading',folder:'/Users/fjramos8/THP Projects',description:'Satélites de TH Pro.',next:'Verificar relación con repo principal.'},
+  {id:'p-vozia',name:'VOZIA + Biblioteca',color:'#ec4899',icon:'🎙️',status:'Prototipo',progress:20,priority:'Media',client:'IA / Audio',folder:'/Users/fjramos8/VOZIA',description:'Proyecto Vozia y biblioteca.',next:'Revisar contenido.'},
+  {id:'p-wbhub-total',name:'WbHub Total',color:'#60a5fa',icon:'🌍',status:'Prototipo',progress:30,priority:'Media',client:'WebHub',link:'http://localhost:3000',folder:'/Users/fjramos8/WbHub Total',description:'Versión Total de WebHub.',next:'Analizar alcance.'},
+  {id:'p-chefsense',name:'ChefSense Final',color:'#14b8a6',icon:'👨‍🍳',status:'Lanzado',progress:85,priority:'Media',client:'Cocina / IA',link:'http://localhost:5500',folder:'/Users/fjramos8/ChefSense',githubLink:'https://github.com/fjramos8/chefsense',description:'App de recetas con IA.',next:'Publicar y evaluar integración.'},
+  {id:'p-nutritrack',name:'NutriTrack Pro',color:'#2dd4a0',icon:'🥗',status:'Activo',progress:64,priority:'Media',client:'Salud / nutrición',link:'http://localhost:3200',folder:'/Users/fjramos8/NutriTrack',githubLink:'https://github.com/fjramos8/nutritrack',description:'App de seguimiento nutricional.',next:'Añadir panel de objetivos.'},
+  {id:'p-davin-v4',name:'DaViN IA Studio Pro v4',color:'#7c5cfc',icon:'🤖',status:'Activo',progress:45,priority:'Alta',client:'IA creativa',link:'http://localhost:8000',folder:'/Users/fjramos8/DaViN/v4',githubLink:'https://github.com/fjramos8/davin-v4',description:'Estudio IA DaViN v4.',next:'Definir diferencias con v3.'},
+  {id:'p-davin-v3',name:'DaViN IA Studio Pro v3',color:'#8b5cf6',icon:'🧠',status:'En pausa',progress:55,priority:'Media',client:'IA creativa',folder:'/Users/fjramos8/DaViN/v3',description:'Estudio IA DaViN v3.',next:'Fusionar lo mejor en v4.'},
+  {id:'p-davin-pro',name:'DaViN IA Studio Pro',color:'#a78bfa',icon:'💡',status:'En pausa',progress:42,priority:'Baja',client:'IA creativa',folder:'/Users/fjramos8/DaViN/Pro',description:'Iteración Pro previa.',next:'Marcar funcionalidades rescatables.'},
+  {id:'p-davin-base',name:'DaViN IA Studio',color:'#94a3b8',icon:'🔬',status:'En pausa',progress:38,priority:'Baja',client:'IA creativa',folder:'/Users/fjramos8/DaViN/Base',description:'Base funcional DaViN.',next:'Documentar aprendizajes.'},
+  {id:'p-davin-premium',name:'DaViN IA Premium',color:'#f59e0b',icon:'⭐',status:'En pausa',progress:48,priority:'Baja',client:'IA premium',folder:'/Users/fjramos8/DaViN/Premium',description:'Variante premium con PWA.',next:'Decidir si fusionar con v4.'},
+  {id:'p-nexus-pwa',name:'Nexus v38 PWA',color:'#f05c5c',icon:'🔗',status:'Activo',progress:60,priority:'Alta',client:'Sistema personal',link:'http://localhost:5000',folder:'/Users/fjramos8/Nexus/v38',githubLink:'https://github.com/fjramos8/nexus-v38',description:'PWA del sistema Nexus v38.',next:'Verificar service worker.'},
+  {id:'p-nexus-system',name:'Nexus System Actualizado',color:'#fb923c',icon:'🔄',status:'Activo',progress:55,priority:'Alta',client:'Sistema personal',folder:'/Users/fjramos8/Nexus/System',description:'Sistema Nexus actualizado.',next:'Sincronizar con v38 PWA.'},
+  {id:'p-nexus-docs',name:'Nexus Webs Documental',color:'#22d3ee',icon:'📑',status:'En pausa',progress:35,priority:'Media',client:'Documentación',folder:'/Users/fjramos8/Nexus/Docs',description:'Capa documental Nexus.',next:'Integrar con Link Organizer.'},
+  {id:'p-agentes-bots',name:'Agentes y Bots Pro',color:'#7c5cfc',icon:'🤖',status:'Activo',progress:50,priority:'Alta',client:'IA / automatización',folder:'/Users/fjramos8/Agentes Bots',githubLink:'https://github.com/fjramos8/agentes-bots',description:'Sistema de agentes y bots.',next:'Definir arquitectura de comunicación.'},
+  {id:'p-multi-agente',name:'Multi Agente',color:'#60a5fa',icon:'🧠',status:'Prototipo',progress:30,priority:'Media',client:'IA multi-agente',folder:'/Users/fjramos8/Multi Agente',description:'Sistema multi-agente experimental.',next:'Fusionar con Agentes y Bots.'},
+  {id:'p-n8n',name:'n8n Automation',color:'#ec4899',icon:'⚡',status:'Activo',progress:45,priority:'Alta',client:'Automatización',link:'http://localhost:5678',folder:'/Users/fjramos8/n8n',description:'Flujos de automatización n8n.',next:'Documentar flujos activos.'},
+  {id:'p-user-proxy',name:'UserProxy',color:'#14b8a6',icon:'🔀',status:'Prototipo',progress:20,priority:'Media',client:'IA / proxy',folder:'/Users/fjramos8/UserProxy',description:'Sistema proxy de usuario IA.',next:'Definir protocolo de comunicación.'},
+  {id:'p-link-organizer',name:'Link Organizer Refresh',color:'#34d399',icon:'🔗',status:'Activo',progress:70,priority:'Media',client:'Productividad',folder:'/Users/fjramos8/Link Organizer',description:'Organizador de enlaces.',next:'Conectar con Project OS.'},
+  {id:'p-documemory',name:'DocuMemory',color:'#f97316',icon:'📝',status:'Prototipo',progress:58,priority:'Alta',client:'Documentos / memoria',folder:'/Users/fjramos8/DocuMemory',description:'Herramienta de memoria documental.',next:'Elegir versión canónica.'},
+  {id:'p-automatizacion-web',name:'Automatización Web',color:'#8b5cf6',icon:'🕸️',status:'En pausa',progress:35,priority:'Media',client:'Automatización',folder:'/Users/fjramos8/Automatizacion Web',description:'Suite de automatización web.',next:'Evaluar si usar n8n como backend.'},
+  {id:'p-entrenamiento2',name:'Entrenamiento (v2)',color:'#22d3ee',icon:'💪',status:'Prototipo',progress:20,priority:'Baja',client:'Salud',folder:'/Users/fjramos8/Entrenamiento v2',description:'Rutinas de entrenamiento v2.',next:'Definir flujo mínimo.'},
+  {id:'p-bookshelf2',name:'BookShelf (v2)',color:'#14b8a6',icon:'📖',status:'Prototipo',progress:40,priority:'Baja',client:'Lectura',folder:'/Users/fjramos8/BookShelf v2',description:'Gestor de libros v2.',next:'Integrar con VOZIA.'},
+  {id:'p-news-intel2',name:'News Intelligence (v2)',color:'#f472b6',icon:'📡',status:'Activo',progress:45,priority:'Alta',client:'Información / IA',folder:'/Users/fjramos8/News Intelligence v2',description:'Análisis de noticias v2.',next:'Conectar con Trading Hub Pro.'},
+  {id:'p-personal-apps2',name:'Personal Apps (v2)',color:'#94a3b8',icon:'📱',status:'Activo',progress:40,priority:'Media',client:'Personal',folder:'/Users/fjramos8/Personal Apps v2',description:'Apps personales v2.',next:'Catalogar apps activas.'},
+  {id:'p-trading-hub-docs',name:'Trading Hub (Docs)',color:'#f59e0b',icon:'📁',status:'En pausa',progress:35,priority:'Media',client:'Trading',folder:'/Users/fjramos8/Trading Hub Docs',description:'Versión anterior en Documents.',next:'Evaluar qué rescatar.'},
+  {id:'p-gestor-gastos',name:'Gestor de Gastos Personal',color:'#f05c5c',icon:'💳',status:'Prototipo',progress:15,priority:'Media',client:'Finanzas',link:'http://localhost:7200',folder:'/Users/fjramos8/Gestor Gastos',githubLink:'https://github.com/fjramos8/gestor-gastos',description:'App para registro de gastos personales.',next:'Definir modelo de datos.'},
+  {id:'p-mcp-servers',name:'MCP Servers',color:'#7c5cfc',icon:'🔌',status:'Activo',progress:30,priority:'Alta',client:'IA',folder:'/Users/fjramos8/MCP Servers',githubLink:'https://github.com/fjramos8/mcp-servers',description:'Servidores MCP personalizados.',next:'Documentar protocolo.'},
+  {id:'p-portfolio-web',name:'Portfolio Web Personal',color:'#a78bfa',icon:'🌐',status:'Lanzado',progress:95,priority:'Alta',client:'Personal',link:'https://fjramos8.dev',folder:'/Users/fjramos8/Portfolio',githubLink:'https://github.com/fjramos8/portfolio',netlifyLink:'https://app.netlify.com/sites/fjramos8',description:'Sitio web personal con portfolio.',next:'Añadir sección de proyectos.'},
+  {id:'p-inventario-apps',name:'Inventario de Apps',color:'#94a3b8',icon:'📋',status:'Activo',progress:60,priority:'Alta',client:'Project OS',link:'http://localhost:5555',folder:'/Users/fjramos8/Inventario Apps',description:'Base de datos de apps personales.',next:'Completar fichas de apps.'},
+  {id:'p-ia-templates',name:'Plantillas IA',color:'#8b5cf6',icon:'🧠',status:'Activo',progress:70,priority:'Media',client:'IA',folder:'/Users/fjramos8/IA Plantillas',githubLink:'https://github.com/fjramos8/ia-templates',description:'Plantillas de prompts y agentes IA.',next:'Añadir plantillas Daily Review.'},
+  {id:'p-dashboard-unificado',name:'Dashboard Unificado',color:'#2dd4a0',icon:'📊',status:'Prototipo',progress:25,priority:'Alta',client:'Project OS',link:'http://localhost:7777',folder:'/Users/fjramos8/Dashboard Unificado',description:'Dashboard de métricas unificadas.',next:'Definir KPIs principales.'},
+  {id:'p-scripts-automatizacion',name:'Scripts de Automatización',color:'#f59e0b',icon:'⚡',status:'Activo',progress:55,priority:'Media',client:'Automatización',folder:'/Users/fjramos8/Scripts Auto',githubLink:'https://github.com/fjramos8/automation-scripts',description:'Scripts de automatización del sistema.',next:'Documentar cada script.'},
+  {id:'p-api-personal',name:'API Personal',color:'#60a5fa',icon:'🔗',status:'Prototipo',progress:20,priority:'Media',client:'Backend',link:'http://localhost:9000',folder:'/Users/fjramos8/API Personal',githubLink:'https://github.com/fjramos8/api-personal',description:'API unificada para proyectos personales.',next:'Definir endpoints prioritarios.'},
+  {id:'p-notion-mcp',name:'Notion MCP Bridge',color:'#34d399',icon:'📝',status:'Prototipo',progress:40,priority:'Alta',client:'IA',folder:'/Users/fjramos8/Notion MCP',githubLink:'https://github.com/fjramos8/notion-mcp',description:'Puente MCP para Notion.',next:'Probar conexión con agente.'},
+  {id:'p-graficos-lib',name:'Librería de Gráficos',color:'#f472b6',icon:'📈',status:'Prototipo',progress:35,priority:'Baja',client:'Utilidades',folder:'/Users/fjramos8/Graficos Lib',description:'Componentes de gráficos reutilizables.',next:'Extraer de Flow Hub a librería.'},
+  {id:'p-habit-tracker',name:'Habit Tracker Pro',color:'#22d3ee',icon:'🔥',status:'Activo',progress:50,priority:'Media',client:'Salud',link:'http://localhost:4400',folder:'/Users/fjramos8/Habit Tracker',description:'Seguimiento de hábitos con rachas.',next:'Añadir notificaciones push.'},
+  {id:'p-markdown-wiki',name:'Markdown Wiki',color:'#f97316',icon:'📚',status:'Activo',progress:65,priority:'Media',client:'Documentación',link:'http://localhost:6600',folder:'/Users/fjramos8/Markdown Wiki',githubLink:'https://github.com/fjramos8/md-wiki',description:'Wiki personal en Markdown.',next:'Añadir exportación PDF.'},
+  {id:'p-gestor-pass',name:'Gestor de Contraseñas',color:'#ec4899',icon:'🔐',status:'Prototipo',progress:10,priority:'Baja',client:'Seguridad',folder:'/Users/fjramos8/Gestor Pass',description:'Gestor de contraseñas local.',next:'Definir esquema de cifrado.'},
+  {id:'p-asistente-ia-local',name:'Asistente IA Local',color:'#7c5cfc',icon:'🤖',status:'Prototipo',progress:15,priority:'Media',client:'IA',folder:'/Users/fjramos8/Asistente IA',githubLink:'https://github.com/fjramos8/asistente-ia-local',description:'Asistente IA con Ollama local.',next:'Probar conexión con Ollama.'},
+  {id:'p-firebase-utils',name:'Firebase Utils',color:'#f59e0b',icon:'🔥',status:'Activo',progress:45,priority:'Media',client:'Infraestructura',folder:'/Users/fjramos8/Firebase Utils',githubLink:'https://github.com/fjramos8/firebase-utils',description:'Utilidades para Firebase.',next:'Documentar funciones Cloud.'},
+  {id:'p-calendario-agente',name:'Calendario con Agente IA',color:'#60a5fa',icon:'📅',status:'Prototipo',progress:20,priority:'Media',client:'IA',folder:'/Users/fjramos8/Calendario IA',description:'Calendario inteligente con IA.',next:'Integrar con Google Calendar.'},
+  {id:'p-data-viz',name:'Data Visualization Lab',color:'#14b8a6',icon:'📊',status:'Prototipo',progress:30,priority:'Baja',client:'Datos',folder:'/Users/fjramos8/Data Viz',githubLink:'https://github.com/fjramos8/data-viz-lab',description:'Laboratorio de visualización de datos.',next:'Crear visualizaciones de ejemplo.'},
+  {id:'p-monitoring',name:'Monitoring Dashboard',color:'#f05c5c',icon:'📡',status:'Prototipo',progress:25,priority:'Media',client:'Infraestructura',link:'http://localhost:9090',folder:'/Users/fjramos8/Monitoring',description:'Dashboard de monitoreo de servicios.',next:'Conectar con n8n.'},
+  {id:'p-pwa-kit',name:'PWA Starter Kit',color:'#8b5cf6',icon:'📱',status:'Prototipo',progress:40,priority:'Baja',client:'Utilidades',folder:'/Users/fjramos8/PWA Kit',githubLink:'https://github.com/fjramos8/pwa-starter',description:'Kit de inicio para PWAs.',next:'Publicar en GitHub.'},
+  {id:'p-cli-tools',name:'CLI Personal Tools',color:'#94a3b8',icon:'🖥️',status:'Activo',progress:50,priority:'Media',client:'Utilidades',folder:'/Users/fjramos8/CLI Tools',githubLink:'https://github.com/fjramos8/cli-tools',description:'Herramientas CLI personales.',next:'Añadir comando quick-add.'},
+];
+
+const SEED_TASKS = [
+  {id:'st-1',title:'Inventariar las 20 apps reales',notes:'Nombre, ruta, estado, avance, próximo paso',priority:1,projectId:'p-project-os',status:'todo',done:false,dueDate:'',subtasks:[],createdAt:Date.now()-1000000},
+  {id:'st-2',title:'Revisar agentes de Trading Hub Pro',notes:'Estabilizar datos de Firebase',priority:1,projectId:'p-trading-hub-pro',status:'doing',done:false,dueDate:'',subtasks:[],createdAt:Date.now()-900000},
+  {id:'st-3',title:'Checklist de lanzamiento FiscalFlow',notes:'Datos, docs, tests, servidor local y backups',priority:2,projectId:'p-fiscalflow',status:'todo',done:false,dueDate:'',subtasks:[],createdAt:Date.now()-800000},
+  {id:'st-4',title:'Cerrar cálculos renta 2025',notes:'Preparar documentos para presentación',priority:1,projectId:'p-renta-2025',status:'doing',done:false,dueDate:'',subtasks:[],createdAt:Date.now()-700000},
+  {id:'st-5',title:'Fusionar versiones DaViN duplicadas',notes:'Detectar diferencias entre Studio, Pro, v3 y v4',priority:1,projectId:'p-davin-v4',status:'todo',done:false,dueDate:'',subtasks:[],createdAt:Date.now()-600000},
+  {id:'st-6',title:'Sincronizar Nexus v38 con System',notes:'Decidir versión maestra',priority:2,projectId:'p-nexus-pwa',status:'todo',done:false,dueDate:'',subtasks:[],createdAt:Date.now()-500000},
+  {id:'st-7',title:'Añadir fuentes de ingresos',notes:'Dashboard Ingresos Extra',priority:1,projectId:'p-ingresos-extra',status:'doing',done:false,dueDate:'',subtasks:[],createdAt:Date.now()-400000},
+  {id:'st-8',title:'Conectar n8n con agentes',notes:'Documentar flujos activos',priority:2,projectId:'p-n8n',status:'todo',done:false,dueDate:'',subtasks:[],createdAt:Date.now()-300000},
+  {id:'st-9',title:'Probar widget de música Nocturnal',notes:'Modo fiesta y ecualizador',priority:3,projectId:'p-nocturnal',status:'todo',done:false,dueDate:'',subtasks:[],createdAt:Date.now()-200000},
+  {id:'st-10',title:'Revisar compatibilidad Crypto-Tax',notes:'Exportar informe para renta 2025',priority:1,projectId:'p-crypto-tax',status:'todo',done:false,dueDate:'',subtasks:[],createdAt:Date.now()-100000},
+];
+
+/* ══════════════════════════════════════════
    NAVIGATION
-══════════════════════════════════════════ */
+═════════════════════════════════════════ */
 function navigate(view, projectId) {
   // Hide all views
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -865,7 +1168,7 @@ function navigate(view, projectId) {
   if(navEl) navEl.classList.add('active');
 
   // topbar
-  const titles = { dashboard:'Dashboard', inbox:'Bandeja de entrada', today:'Hoy', upcoming:'Próximas', notes:'Notas', habits:'Hábitos', templates:'Plantillas', project:'', 'note-editor':'' };
+  const titles = { dashboard:'Dashboard', inbox:'Bandeja de entrada', today:'Hoy', upcoming:'Próximas', notes:'Notas', habits:'Hábitos', templates:'Plantillas', project:'', 'note-editor':'', projects:'Todos los proyectos', calendar:'Calendario', charts:'Gráficas', ai:'Asistente IA' };
   document.getElementById('topbarTitle').textContent = titles[view] || '';
   setTopbarActions(view);
 
@@ -884,6 +1187,10 @@ function navigate(view, projectId) {
   if(view === 'notes') renderNotes();
   if(view === 'habits') renderHabits();
   if(view === 'templates') renderTemplates();
+  if(view === 'projects') renderAllProjects();
+  if(view === 'calendar') renderStandaloneCalendar();
+  if(view === 'charts') renderCharts();
+  if(view === 'ai') renderAI();
 
   closeSidebar();
 }
@@ -915,7 +1222,8 @@ function renderSidebar() {
     const div = document.createElement('div');
     div.className = 'sb-proj-item' + (state.currentProjectId === p.id && state.currentView === 'project' ? ' active' : '');
     div.setAttribute('data-proj', p.id);
-    div.innerHTML = `<div class="sb-proj-dot" style="background:${p.color}"></div><span class="sb-proj-name">${esc(p.name)}</span><span class="sb-proj-count">${pending||''}</span>`;
+    const hasLink = p.link || p.folder;
+    div.innerHTML = `<div class="sb-proj-dot" style="background:${p.color}"></div><span class="sb-proj-name">${esc(p.name)}</span><span class="sb-proj-count">${pending||''}</span>${hasLink?`<span class="sb-proj-open" title="Abrir proyecto" onclick="event.stopPropagation();openProjectLink('${p.id}')">↗</span>`:''}`;
     div.onclick = () => navigate('project', p.id);
     el.appendChild(div);
   });
@@ -1001,30 +1309,32 @@ function renderDashboard() {
   const totalNotes = state.notes.length;
   const completedToday = state.tasks.filter(t => t.done && t.doneAt === today()).length;
 
+  const activeProjects = state.projects.filter(p => p.status==='Activo').length;
+  const avgProgress = state.projects.length > 0 ? Math.round(state.projects.reduce((s,p) => s+Number(p.progress||0),0)/state.projects.length) : 0;
   document.getElementById('dashStats').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-ico">📁</div>
+      <div class="stat-val" style="color:var(--accent2)">${state.projects.length}</div>
+      <div class="stat-lbl">Proyectos</div>
+      <div class="stat-delta up">${activeProjects} activos ahora</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-ico">📈</div>
+      <div class="stat-val" style="color:var(--blue)">${avgProgress}%</div>
+      <div class="stat-lbl">Avance medio</div>
+      <div class="stat-delta">Del portfolio completo</div>
+    </div>
     <div class="stat-card">
       <div class="stat-ico">☀️</div>
       <div class="stat-val" style="color:var(--accent2)">${todayTasks.length}</div>
       <div class="stat-lbl">Tareas hoy</div>
-      ${completedToday > 0 ? `<div class="stat-delta up">✓ ${completedToday} completadas</div>` : ''}
+      ${completedToday > 0 ? `<div class="stat-delta up">✓ ${completedToday} completadas</div>` : '<div class="stat-delta up">Sin tareas</div>'}
     </div>
     <div class="stat-card">
       <div class="stat-ico">📋</div>
       <div class="stat-val">${state.tasks.filter(t=>!t.done).length}</div>
       <div class="stat-lbl">Pendientes</div>
-      ${overdue > 0 ? `<div class="stat-delta down">⚠ ${overdue} vencidas</div>` : '<div class="stat-delta up">Todo al día</div>'}
-    </div>
-    <div class="stat-card">
-      <div class="stat-ico">✅</div>
-      <div class="stat-val" style="color:var(--green)">${doneTasks}</div>
-      <div class="stat-lbl">Completadas</div>
-      ${totalTasks > 0 ? `<div class="stat-delta">${Math.round(doneTasks/totalTasks*100)}% del total</div>` : ''}
-    </div>
-    <div class="stat-card">
-      <div class="stat-ico">📝</div>
-      <div class="stat-val">${totalNotes}</div>
-      <div class="stat-lbl">Notas</div>
-      <div class="stat-delta">${state.projects.length} proyectos</div>
+      ${overdue > 0 ? `<div class="stat-delta down">⚠ ${overdue} vencidas</div>` : `<div class="stat-delta up">${doneTasks} hechas · ${Math.round(doneTasks/totalTasks*100)}% completo</div>`}
     </div>`;
 
   // Today tasks
@@ -1089,6 +1399,33 @@ function renderDashboard() {
   }
   weekHtml += '</div>';
   progressEl.innerHTML = weekHtml;
+
+  // Smart Queue — próximos pasos de proyectos activos
+  const sqEl = document.getElementById('smartQueue');
+  const entries = state.projects
+    .filter(p => p.next && p.status === 'Activo')
+    .sort((a,b) => {
+      const pa = {Alta:3,Media:2,Baja:1}[a.priority]||0;
+      const pb = {Alta:3,Media:2,Baja:1}[b.priority]||0;
+      return pb - pa || (a.progress||0) - (b.progress||0);
+    })
+    .slice(0,6);
+  if(entries.length === 0) {
+    sqEl.innerHTML = `<div style="padding:16px;text-align:center;color:var(--t3);font-size:13px">🎯 Sin próximos pasos definidos</div>`;
+  } else {
+    sqEl.innerHTML = entries.map(p => `
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--rsm);cursor:pointer;transition:background .15s" onmouseenter="this.style.background='var(--s3)'" onmouseleave="this.style.background=''" onclick="navigate('project','${p.id}')">
+        <div style="width:8px;height:8px;border-radius:50%;background:${p.color};flex-shrink:0"></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12px;font-weight:600">${esc(p.name)}</div>
+          <div style="font-size:12px;color:var(--t2)">${esc(p.next)}</div>
+        </div>
+        <div style="display:flex;gap:4px;flex-shrink:0">
+          ${p.priority === 'Alta' ? '<span style="font-size:10px;padding:2px 6px;background:rgba(240,92,92,.15);color:var(--red);border-radius:4px;font-weight:600">Alta</span>' : ''}
+          <span style="font-size:10px;padding:2px 6px;background:var(--s3);color:var(--t3);border-radius:4px">${p.progress||0}%</span>
+        </div>
+      </div>`).join('');
+  }
 }
 
 /* ══════════════════════════════════════════
@@ -1167,8 +1504,72 @@ function renderUpcoming() {
 }
 
 /* ══════════════════════════════════════════
+   ALL PROJECTS GRID
+═════════════════════════════════════════ */
+let projectsGridFilter = 'all';
+function filterProjectsGrid(filter, el) {
+  projectsGridFilter = filter;
+  if(el) { document.querySelectorAll('#projectsFilterBar .filter-chip').forEach(c => c.classList.remove('active')); el.classList.add('active'); }
+  renderAllProjects();
+}
+function renderAllProjects() {
+  const el = document.getElementById('projectsGrid');
+  const title = document.getElementById('projectsCount');
+  const filtered = projectsGridFilter === 'all' ? state.projects : state.projects.filter(p => p.status === projectsGridFilter);
+  if(title) title.textContent = `${filtered.length} proyectos en total`;
+  if(filtered.length === 0) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📂</div><div class="empty-state-title">Sin proyectos</div><div class="empty-state-sub">Crea tu primer proyecto desde la barra lateral</div></div>`;
+    return;
+  }
+  el.innerHTML = filtered.map(p => {
+    const taskCount = state.tasks.filter(t => t.projectId === p.id && !t.done).length;
+    const folderPath = p.folder || (p.link && !p.link.startsWith('http') && p.link.includes('/') ? p.link.substring(0, p.link.lastIndexOf('/')) : null);
+    const statusColor = p.status === 'Activo' ? '#2dd4a0' : p.status === 'En pausa' ? '#f59e0b' : p.status === 'Lanzado' ? '#7c5cfc' : '#60a5fa';
+    return `<div class="proj-card" onclick="navigate('project','${p.id}')">
+      <div class="proj-card-header">
+        <div class="proj-card-dot" style="background:${p.color}"></div>
+        <div class="proj-card-name">${esc(p.name)}</div>
+        <span style="font-size:12px;font-weight:700;color:${p.color}">${p.progress||0}%</span>
+      </div>
+      ${p.description ? `<div class="proj-card-desc">${esc(p.description)}</div>` : ''}
+      <div class="proj-card-meta">
+        <span class="proj-card-tag" style="background:${statusColor}20;color:${statusColor}">${esc(p.status)}</span>
+        ${p.priority ? `<span class="proj-card-tag" style="background:${p.priority==='Alta'?'rgba(240,92,92,.15)':'rgba(96,165,250,.15)'};color:${p.priority==='Alta'?'var(--red)':'var(--blue)'}">${esc(p.priority)}</span>` : ''}
+        ${p.client ? `<span class="proj-card-tag" style="background:var(--s3);color:var(--t3)">${esc(p.client)}</span>` : ''}
+        <span class="proj-card-tag" style="background:var(--s3);color:var(--t3)">${taskCount} tareas</span>
+      </div>
+      <div class="proj-card-actions" onclick="event.stopPropagation()">
+        ${p.link ? `<a class="proj-card-btn" href="${esc(p.link)}" target="_blank" rel="noreferrer">🌐 Abrir</a>` : ''}
+        ${folderPath ? `<a class="proj-card-btn" href="${esc(folderPath)}" target="_blank" rel="noreferrer">📂 Carpeta</a>` : ''}
+        ${p.githubLink ? `<a class="proj-card-btn" href="${esc(p.githubLink)}" target="_blank" rel="noreferrer" style="color:#6e5494">GitHub</a>` : ''}
+        ${p.netlifyLink ? `<a class="proj-card-btn" href="${esc(p.netlifyLink)}" target="_blank" rel="noreferrer" style="color:#00ad9f">Netlify</a>` : ''}
+      </div>
+      <div class="proj-card-progress"><div class="proj-card-progress-fill" style="width:${Math.min(100,Number(p.progress||0))}%;background:${p.color}"></div></div>
+    </div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════
+   THEME TOGGLE
+═════════════════════════════════════════ */
+function toggleTheme() {
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme') || 'dark';
+  const next = current === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('flow_theme', next);
+  document.getElementById('themeBtn').textContent = next === 'dark' ? '🌙' : '☀️';
+}
+function loadTheme() {
+  const saved = localStorage.getItem('flow_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  const btn = document.getElementById('themeBtn');
+  if(btn) btn.textContent = saved === 'dark' ? '🌙' : '☀️';
+}
+
+/* ══════════════════════════════════════════
    PROJECT VIEW
-══════════════════════════════════════════ */
+═════════════════════════════════════════ */
 function renderProject() {
   const p = getProject(state.currentProjectId);
   if(!p) return;
@@ -1206,11 +1607,33 @@ function renderProjectList(p) {
   let tasks = applyFilter(state.tasks.filter(t => t.projectId === p.id));
   const active = tasks.filter(t => !t.done);
   const done   = tasks.filter(t => t.done);
-  let html = `<div style="padding:20px 22px 0;display:flex;align-items:center;gap:10px">
-    <div style="width:14px;height:14px;border-radius:50%;background:${p.color}"></div>
-    <div style="font-size:15px;font-weight:700">${esc(p.name)}</div>
-    <div style="flex:1"></div>
-    <div style="font-size:12px;color:var(--t3)">${active.length} pendientes</div>
+  const folderPath = p.folder || (p.link && !p.link.startsWith('http') ? p.link.substring(0, p.link.lastIndexOf('/')) : null);
+  let html = `<div style="padding:20px 22px 0">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <div style="width:14px;height:14px;border-radius:50%;background:${p.color};flex-shrink:0"></div>
+      <div style="font-size:17px;font-weight:800;flex:1">${esc(p.name)}</div>
+      <div style="font-size:12px;color:var(--t3)">${active.length} pendientes · ${done.length} hechas</div>
+    </div>
+    ${p.description ? `<div style="font-size:13px;color:var(--t2);margin-bottom:8px;line-height:1.5">${esc(p.description)}</div>` : ''}
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+      ${p.status ? `<span class="filter-chip active" style="cursor:default;background:${p.status==='Activo'?'rgba(45,212,160,.15)':p.status==='En pausa'?'rgba(245,158,11,.15)':'rgba(96,165,250,.15)'};border-color:transparent;color:${p.status==='Activo'?'#2dd4a0':p.status==='En pausa'?'#f59e0b':'#60a5fa'}">${esc(p.status)}</span>` : ''}
+      ${p.priority ? `<span class="filter-chip" style="cursor:default;background:${p.priority==='Alta'?'rgba(240,92,92,.15)':'rgba(96,165,250,.15)'};border-color:transparent;color:${p.priority==='Alta'?'var(--red)':'var(--blue)'}">${esc(p.priority)} prioridad</span>` : ''}
+      ${p.client ? `<span class="filter-chip" style="cursor:default;background:var(--s3);border-color:transparent;color:var(--t2)">${esc(p.client)}</span>` : ''}
+      ${p.progress !== undefined ? `<span class="filter-chip" style="cursor:default;background:var(--s3);border-color:transparent;color:var(--t2)">${p.progress}%</span>` : ''}
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+      ${p.link ? `<a class="tb-btn" href="${esc(p.link)}" target="_blank" rel="noreferrer" style="text-decoration:none">🌐 Abrir web</a>` : ''}
+      ${folderPath ? `<a class="tb-btn" href="${esc(folderPath)}" target="_blank" rel="noreferrer" style="text-decoration:none">📂 Abrir carpeta</a>` : ''}
+      ${p.githubLink ? `<a class="tb-btn" href="${esc(p.githubLink)}" target="_blank" rel="noreferrer" style="text-decoration:none;color:#6e5494">🐙 GitHub</a>` : ''}
+      ${p.netlifyLink ? `<a class="tb-btn" href="${esc(p.netlifyLink)}" target="_blank" rel="noreferrer" style="text-decoration:none;color:#00ad9f">▲ Netlify</a>` : ''}
+    </div>
+    ${p.next ? `<div style="padding:8px 12px;background:var(--s3);border-radius:var(--rsm);margin-bottom:12px;font-size:13px"><span style="color:var(--t3)">▶ Próximo paso:</span> <span style="color:var(--t1);font-weight:500">${esc(p.next)}</span></div>` : ''}
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="flex:1;height:6px;background:var(--border);border-radius:4px;overflow:hidden">
+        <div style="height:100%;width:${Math.min(100,Number(p.progress||0))}%;background:${p.color};border-radius:4px;transition:width .5s"></div>
+      </div>
+      <span style="font-size:12px;font-weight:700;color:${p.color}">${p.progress||0}%</span>
+    </div>
   </div>`;
   if(active.length > 0) html += `<div style="padding:10px 10px 0">${active.map(t=>taskHTML(t)).join('')}</div>`;
   if(done.length > 0) html += `<div style="padding:0 10px"><div class="task-group-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'':'none'">
@@ -1220,39 +1643,7 @@ function renderProjectList(p) {
   el.innerHTML = html;
 }
 
-function renderProjectBoard(p) {
-  const el = document.getElementById('projectBoardView');
-  const statuses = [
-    {key:'todo', label:'Por hacer', color:'var(--t3)'},
-    {key:'doing', label:'En progreso', color:'var(--amber)'},
-    {key:'review', label:'Revisión', color:'var(--blue)'},
-    {key:'done', label:'Completado', color:'var(--green)'},
-  ];
-  const tasks = state.tasks.filter(t => t.projectId === p.id);
-  el.innerHTML = statuses.map(s => {
-    const sts = tasks.filter(t => (s.key==='done'?t.done:(t.status||'todo')===s.key && !t.done));
-    return `<div class="kanban-col">
-      <div class="kanban-col-head">
-        <div class="kc-dot" style="background:${s.color}"></div>
-        <div class="kc-title">${s.label}</div>
-        <div class="kc-count">${sts.length}</div>
-      </div>
-      <div class="kanban-cards">${sts.length===0?'<div style="color:var(--t3);font-size:12px;text-align:center;padding:16px">Vacío</div>':
-        sts.map(t=>`<div class="kanban-card" onclick="openDetail('${t.id}')">
-          <div class="kcard-title">${esc(t.title)}</div>
-          <div class="kcard-meta">
-            ${t.priority<4?`<span class="task-tag ${taskPrioClass(t.priority)}">${taskPrioLabel(t.priority)}</span>`:''}
-            ${t.dueDate?`<span class="task-date ${isPast(t.dueDate)?'overdue':isToday(t.dueDate)?'today':''}">📅 ${fmt(t.dueDate)}</span>`:''}
-          </div>
-        </div>`).join('')}
-      </div>
-      <div class="kanban-add" onclick="openQuickAddWithStatus('${s.key}')">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Añadir
-      </div>
-    </div>`;
-  }).join('') + `<div class="kanban-new-col">+ Columna</div>`;
-}
+/* Replaced by enhanced drag & drop version below */
 
 function renderProjectCalendar(p) {
   const el = document.getElementById('projectCalView');
@@ -1361,6 +1752,10 @@ function refreshCurrentView() {
   else if(v==='today') renderToday();
   else if(v==='upcoming') renderUpcoming();
   else if(v==='project') renderProject();
+  else if(v==='projects') renderAllProjects();
+  else if(v==='calendar') renderStandaloneCalendar();
+  else if(v==='charts') renderCharts();
+  else if(v==='ai') renderAI();
 }
 
 /* ══════════════════════════════════════════
@@ -1415,30 +1810,8 @@ function submitQuickInput() {
 }
 
 /* ══════════════════════════════════════════
-   TASK DETAIL
-══════════════════════════════════════════ */
-function openDetail(id) {
-  const t = getTask(id);
-  if(!t) return;
-  state.currentTaskId = id;
-
-  const p = getProject(t.projectId);
-  document.getElementById('dpProjectLabel').textContent = p ? `${p.icon} ${p.name}` : 'Bandeja de entrada';
-  document.getElementById('dpTitle').textContent = t.title;
-  document.getElementById('dpDate').value = t.dueDate || '';
-  document.getElementById('dpNotes').innerHTML = t.notes || '';
-
-  // Priority buttons
-  const prioEl = document.getElementById('dpPriority');
-  prioEl.innerHTML = [1,2,3,4].map(n => `<button class="prio-btn p${n} ${t.priority===n?'selected':''}" onclick="setDetailPriority(${n})">${taskPrioLabel(n)}</button>`).join('');
-
-  // Project select
-  populateProjectSelect('dpProject');
-  document.getElementById('dpProject').value = t.projectId || '';
-
-  renderSubtasks();
-  document.getElementById('detailPanel').classList.add('show');
-}
+   TASK DETAIL (replaced by enhanced version with tags)
+═════════════════════════════════════════ */
 
 function setDetailPriority(n) {
   const t = getTask(state.currentTaskId);
@@ -1848,12 +2221,35 @@ function doSearch(q) {
 /* ══════════════════════════════════════════
    SETTINGS
 ══════════════════════════════════════════ */
+const AI_MODELS = {
+  openrouter: ['openai/gpt-4o-mini','openai/gpt-4o','anthropic/claude-3.5-sonnet','google/gemini-2.0-flash-001','meta-llama/llama-3.3-70b-instruct','mistralai/mistral-7b-instruct','cohere/command-r-08-2024'],
+  groq: ['llama3-70b-8192','llama3-8b-8192','mixtral-8x7b-32768','gemma2-9b-it','llama-3.3-70b-versatile','llama-3.1-8b-instant'],
+  gemini: ['gemini-2.0-flash','gemini-2.0-flash-lite','gemini-1.5-flash','gemini-1.5-pro']
+};
+function populateAIModels(provider) {
+  var sel = document.getElementById('settingAIModel');
+  var current = sel.value;
+  var models = AI_MODELS[provider] || AI_MODELS.openrouter;
+  sel.innerHTML = models.map(function(m) { return '<option value="'+m+'"'+(m===current?' selected':'')+'>'+m+'</option>'; }).join('');
+  if(models.indexOf(current) < 0) sel.value = models[0];
+}
+function onAIProviderChange() {
+  populateAIModels(document.getElementById('settingAIProvider').value);
+  saveSettings();
+}
 function openSettings() {
   document.getElementById('settingName').value = state.settings.name || '';
+  document.getElementById('settingAIProvider').value = state.settings.aiProvider || 'openrouter';
+  populateAIModels(state.settings.aiProvider || 'openrouter');
+  document.getElementById('settingAIModel').value = state.settings.aiModel || AI_MODELS[state.settings.aiProvider||'openrouter'][0];
+  document.getElementById('settingAIKey').value = state.settings.aiKey || '';
   openOverlay('overlaySettings');
 }
 function saveSettings() {
   state.settings.name = document.getElementById('settingName').value;
+  state.settings.aiProvider = document.getElementById('settingAIProvider').value;
+  state.settings.aiModel = document.getElementById('settingAIModel').value;
+  state.settings.aiKey = document.getElementById('settingAIKey').value;
   save();
 }
 function clearAllData() {
@@ -1882,16 +2278,847 @@ function selectPriority(el, n) {
 }
 
 /* ══════════════════════════════════════════
+   STANDALONE CALENDAR
+═════════════════════════════════════════ */
+function renderStandaloneCalendar() {
+  const el = document.getElementById('calendarContent');
+  el.style.padding = '20px';
+  const allTasks = state.tasks.filter(t => t.dueDate);
+  renderCalendarIn(el, allTasks);
+}
+
+/* ══════════════════════════════════════════
+   CHARTS — Canvas API
+═════════════════════════════════════════ */
+function renderCharts() {
+  ['renderChartTasks','renderChartProjects','renderChartPriority','renderChartProductivity','renderChartStats','renderProjectBreakdown'].forEach(fn => {
+    try { window[fn](); } catch(e) { console.warn('Chart error:', fn, e); }
+  });
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  if(typeof r === 'number') r = [r,r,r,r];
+  if(!Array.isArray(r)) r = [4,4,4,4];
+  while(r.length < 4) r.push(r[0]);
+  ctx.beginPath();
+  ctx.moveTo(x + r[0], y);
+  ctx.lineTo(x + w - r[1], y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r[1]);
+  ctx.lineTo(x + w, y + h - r[2]);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r[2], y + h);
+  ctx.lineTo(x + r[3], y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r[3]);
+  ctx.lineTo(x, y + r[0]);
+  ctx.quadraticCurveTo(x, y, x + r[0], y);
+  ctx.closePath();
+}
+function setupCanvas(id) {
+  const canvas = document.getElementById(id);
+  if(!canvas) return null;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const parent = canvas.parentElement;
+  let pw = parent.clientWidth;
+  if(pw === 0) { pw = parent.parentElement?.clientWidth || 300; }
+  const cw = Math.max(pw - 32, 200);
+  canvas.width = cw * dpr;
+  canvas.height = 200 * dpr;
+  canvas.style.width = cw + 'px';
+  canvas.style.height = '200px';
+  ctx.scale(dpr, dpr);
+  return { ctx, w: canvas.width / dpr, h: canvas.height / dpr, cw };
+}
+function renderChartTasks() {
+  const s = setupCanvas('chartTasksCanvas');
+  if(!s) return;
+  const { ctx, w, h } = s;
+
+  const days = [];
+  const counts = [];
+  const labels = [];
+  for(let i=6;i>=0;i--) {
+    const d = dateOffset(today(), -i);
+    days.push(d);
+    labels.push(new Date(d+'T00:00:00').toLocaleDateString('es-ES',{weekday:'short'}).slice(0,3));
+    counts.push(state.tasks.filter(t => t.doneAt === d).length);
+  }
+  const max = Math.max(...counts, 1);
+  const pad = {t:20,b:30,l:30,r:10};
+  const chartW = w - pad.l - pad.r;
+  const chartH = h - pad.t - pad.b;
+  const barW = chartW / days.length * 0.6;
+  const gap = chartW / days.length * 0.4;
+
+  ctx.clearRect(0,0,w,h);
+  // grid lines
+  ctx.strokeStyle = 'rgba(90,90,120,0.15)';
+  ctx.lineWidth = 1;
+  for(let i=0;i<=4;i++) {
+    const y = pad.t + (chartH/4)*i;
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(w-pad.r,y); ctx.stroke();
+  }
+  // bars
+  counts.forEach((c,i) => {
+    const x = pad.l + i*(barW+gap) + gap/2;
+    const barH = (c/max) * chartH;
+    const y = pad.t + chartH - barH;
+    const grad = ctx.createLinearGradient(x,y,x,pad.t+chartH);
+    grad.addColorStop(0,'var(--accent)');
+    grad.addColorStop(1,'var(--accent2)');
+    ctx.fillStyle = i===6 ? '#7c5cfc' : '#3a3a5a';
+    ctx.beginPath();
+    roundRect(ctx, x, y, barW, barH, [4,4,0,0]);
+    ctx.fill();
+    ctx.fillStyle = i===6 ? 'var(--accent2)' : 'var(--t3)';
+    ctx.font = '10px Outfit, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(labels[i], x+barW/2, h-6);
+    // value
+    if(c > 0) {
+      ctx.fillStyle = i===6 ? 'var(--accent2)' : 'var(--t2)';
+      ctx.fillText(c, x+barW/2, y-4);
+    }
+  });
+}
+
+function renderChartProjects() {
+  const s = setupCanvas('chartProjectsCanvas');
+  if(!s) return;
+  const { ctx, w, h } = s;
+
+  const statuses = ['Activo','Prototipo','En pausa','Lanzado'];
+  const colors = ['#2dd4a0','#60a5fa','#f59e0b','#7c5cfc'];
+  const counts = statuses.map(s => state.projects.filter(p => p.status===s).length);
+  const total = counts.reduce((a,b)=>a+b,0)||1;
+  const cx = w/2, cy = h/2, r = Math.min(cx,cy)-20;
+  let startAngle = -Math.PI/2;
+
+  ctx.clearRect(0,0,w,h);
+  // Donut
+  counts.forEach((c,i) => {
+    if(c===0) return;
+    const slice = (c/total) * Math.PI * 2;
+    ctx.beginPath();
+    ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,startAngle,startAngle+slice);
+    ctx.closePath();
+    ctx.fillStyle = colors[i];
+    ctx.fill();
+    startAngle += slice;
+  });
+  // Center hole
+  ctx.beginPath();
+  ctx.arc(cx,cy,r*0.55,0,Math.PI*2);
+  ctx.fillStyle = 'var(--s2)';
+  ctx.fill();
+  // Center text
+  ctx.fillStyle = 'var(--t1)';
+  ctx.font = 'bold 18px Outfit, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(total, cx, cy-4);
+  ctx.fillStyle = 'var(--t3)';
+  ctx.font = '10px Outfit, sans-serif';
+  ctx.fillText('proyectos', cx, cy+14);
+
+  // Legend
+  const legX = 10;
+  let legY = 10;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  statuses.forEach((s,i) => {
+    ctx.fillStyle = colors[i];
+    ctx.fillRect(legX, legY, 8, 8);
+    ctx.fillStyle = 'var(--t2)';
+    ctx.font = '11px Outfit, sans-serif';
+    ctx.fillText(`${s}: ${counts[i]}`, legX+12, legY-1);
+    legY += 18;
+  });
+}
+
+function renderChartPriority() {
+  const s = setupCanvas('chartPriorityCanvas');
+  if(!s) return;
+  const { ctx, w, h } = s;
+
+  const labels = ['🔴 Urgente','🟡 Alta','🔵 Normal','⚪ Sin'];
+  const colors = ['#f05c5c','#f59e0b','#60a5fa','#5a5a78'];
+  const counts = [1,2,3,4].map(p => state.tasks.filter(t => t.priority===p && !t.done).length);
+  const total = counts.reduce((a,b)=>a+b,0)||1;
+  const barH = 28;
+  const gap = 8;
+  const pad = {l:90,r:20,t:10,b:10};
+  const chartW = w - pad.l - pad.r;
+
+  ctx.clearRect(0,0,w,h);
+  counts.forEach((c,i) => {
+    const y = pad.t + i*(barH+gap);
+    // label
+    ctx.fillStyle = 'var(--t2)';
+    ctx.font = '11px Outfit, sans-serif';
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(labels[i], pad.l-8, y+barH/2);
+    // bar bg
+    ctx.fillStyle = 'var(--s3)';
+    roundRect(ctx, pad.l, y, chartW, barH, 4); ctx.fill();
+    // bar fill
+    const w2 = (c/total) * chartW;
+    ctx.fillStyle = colors[i];
+    roundRect(ctx, pad.l, y, Math.max(w2,4), barH, 4); ctx.fill();
+    // count
+    if(c > 0) {
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 11px Outfit, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(c, pad.l+6, y+barH/2);
+      // percentage
+      ctx.fillStyle = 'var(--t3)';
+      ctx.textAlign = 'right';
+      ctx.fillText(Math.round(c/total*100)+'%', pad.l+chartW-6, y+barH/2);
+    }
+  });
+}
+
+function renderChartProductivity() {
+  const s = setupCanvas('chartProductivityCanvas');
+  if(!s) return;
+  const { ctx, w, h } = s;
+
+  const days = [];
+  for(let i=6;i>=0;i--) {
+    const d = dateOffset(today(), -i);
+    days.push({ date: d, completed: state.tasks.filter(t => t.doneAt === d).length, created: state.tasks.filter(t => t.createdAt && new Date(t.createdAt).toISOString().slice(0,10) === d).length });
+  }
+  const max = Math.max(...days.map(d=>Math.max(d.completed,d.created)), 1);
+  const pad = {t:30,b:20,l:30,r:10};
+  const chartW = w - pad.l - pad.r;
+  const chartH = h - pad.t - pad.b;
+
+  ctx.clearRect(0,0,w,h);
+  // grid
+  ctx.strokeStyle = 'rgba(90,90,120,0.1)';
+  ctx.lineWidth = 1;
+  for(let i=0;i<=4;i++) {
+    const y = pad.t + (chartH/4)*i;
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(w-pad.r,y); ctx.stroke();
+  }
+  // lines
+  const xStep = chartW / (days.length-1);
+  ctx.lineWidth = 2;
+  // completed line
+  ctx.strokeStyle = '#2dd4a0';
+  ctx.beginPath();
+  days.forEach((d,i) => {
+    const x = pad.l + i*xStep;
+    const y = pad.t + chartH - (d.completed/max)*chartH;
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  // created line
+  ctx.strokeStyle = '#7c5cfc';
+  ctx.setLineDash([4,4]);
+  ctx.beginPath();
+  days.forEach((d,i) => {
+    const x = pad.l + i*xStep;
+    const y = pad.t + chartH - (d.created/max)*chartH;
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  ctx.setLineDash([]);
+  // labels
+  ctx.fillStyle = 'var(--t3)';
+  ctx.font = '9px Outfit, sans-serif';
+  ctx.textAlign = 'center';
+  days.forEach((d,i) => {
+    const x = pad.l + i*xStep;
+    const lbl = new Date(d.date+'T00:00:00').toLocaleDateString('es-ES',{weekday:'short'}).slice(0,3);
+    ctx.fillText(lbl, x, h-4);
+  });
+  // legend
+  ctx.textAlign = 'left';
+  ctx.font = '10px Outfit, sans-serif';
+  ctx.fillStyle = '#2dd4a0';
+  ctx.fillRect(w-100,6,8,8);
+  ctx.fillStyle = 'var(--t2)';
+  ctx.fillText('Completadas', w-88, 12);
+  ctx.fillStyle = '#7c5cfc';
+  ctx.fillRect(w-100,20,8,8);
+  ctx.fillStyle = 'var(--t2)';
+  ctx.fillText('Creadas', w-88, 26);
+}
+
+function renderChartStats() {
+  const el = document.getElementById('chartStats');
+  if(!el) return;
+  const totalTasks = state.tasks.length;
+  const doneTasks = state.tasks.filter(t => t.done).length;
+  const activeProjects = state.projects.filter(p => p.status==='Activo').length;
+  const overdueCount = state.tasks.filter(t => !t.done && isPast(t.dueDate)).length;
+  const totalSubtasks = state.tasks.reduce((a,t) => a + (t.subtasks||[]).length, 0);
+  const doneSubtasks = state.tasks.reduce((a,t) => a + (t.subtasks||[]).filter(s=>s.done).length, 0);
+  const completionRate = totalTasks > 0 ? Math.round(doneTasks/totalTasks*100) : 0;
+
+  el.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="padding:12px;background:var(--s3);border-radius:var(--rsm);text-align:center">
+        <div style="font-size:24px;font-weight:800;color:var(--accent2)">${totalTasks}</div>
+        <div style="font-size:11px;color:var(--t3)">Tareas totales</div>
+      </div>
+      <div style="padding:12px;background:var(--s3);border-radius:var(--rsm);text-align:center">
+        <div style="font-size:24px;font-weight:800;color:var(--green)">${completionRate}%</div>
+        <div style="font-size:11px;color:var(--t3)">Tasa de compleción</div>
+      </div>
+      <div style="padding:12px;background:var(--s3);border-radius:var(--rsm);text-align:center">
+        <div style="font-size:24px;font-weight:800;color:${overdueCount>0?'var(--red)':'var(--green)'}">${overdueCount}</div>
+        <div style="font-size:11px;color:var(--t3)">Vencidas</div>
+      </div>
+      <div style="padding:12px;background:var(--s3);border-radius:var(--rsm);text-align:center">
+        <div style="font-size:24px;font-weight:800;color:var(--accent2)">${activeProjects}</div>
+        <div style="font-size:11px;color:var(--t3)">Proyectos activos</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;padding:10px 12px;background:var(--s3);border-radius:var(--rsm)">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px">
+        <span style="color:var(--t2)">Progreso global</span>
+        <span style="font-weight:700;color:var(--accent2)">${completionRate}%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${completionRate}%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:8px;color:var(--t3)">
+        <span>${doneSubtasks}/${totalSubtasks} subtareas</span>
+        <span>${doneTasks} hechas</span>
+      </div>
+    </div>`;
+}
+
+function renderProjectBreakdown() {
+  const el = document.getElementById('chartProjectBreakdown');
+  if(!el) return;
+  const statuses = ['Activo','Prototipo','En pausa','Lanzado'];
+  const colors = ['#2dd4a0','#60a5fa','#f59e0b','#7c5cfc'];
+  const counts = statuses.map(s => state.projects.filter(p => p.status===s).length);
+  const total = counts.reduce((a,b)=>a+b,0)||1;
+
+  let html = statuses.map((s,i) => {
+    const pct = Math.round(counts[i]/total*100);
+    return `<div style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span style="color:var(--t2)"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${colors[i]};margin-right:6px"></span>${s}</span>
+        <span style="font-weight:600">${counts[i]} (${pct}%)</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%;background:${colors[i]}"></div></div>
+    </div>`;
+  }).join('');
+  el.innerHTML = html;
+}
+
+/* ══════════════════════════════════════════
+   AI AGENT — Planificación con API
+═════════════════════════════════════════ */
+const AI_PROMPT = `Eres una secretaria organizadora experta en productividad y gestión de proyectos. Tu misión es analizar el portfolio de proyectos y tareas del usuario y generar un plan de acción diario.
+
+DATOS DEL USUARIO:
+- Proyectos: cada uno con nombre, estado (Activo/Prototipo/En pausa/Lanzado), progreso %, prioridad (Alta/Media/Baja), cliente y próximo paso
+- Tareas: con título, prioridad (1=urgente a 4=sin), fecha de vencimiento, proyecto asociado, subtareas y estado
+- Fecha actual y tareas de hoy
+
+INSTRUCCIONES:
+1. Analiza qué proyectos necesitan atención urgente (prioridad alta, progreso bajo, vencidos)
+2. Identifica las 3 tareas más importantes para hoy
+3. Sugiere en qué proyecto enfocarse hoy y por qué
+4. Detecta proyectos estancados (sin avance reciente)
+5. Organiza recomendaciones para el resto de la semana
+6. Sé específica y práctica — da acciones concretas, no genéricas
+
+Responde SOLO en español con formato claro y secciones.`;
+
+function aiAgentCall(messages) {
+  const { aiProvider, aiModel, aiKey } = state.settings;
+  if (!aiKey) return Promise.reject('No hay API key configurada');
+  const endpoints = {
+    openrouter: 'https://openrouter.ai/api/v1/chat/completions',
+    groq: 'https://api.groq.com/openai/v1/chat/completions',
+    gemini: 'https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent'
+  };
+  const defaults = { openrouter:'openai/gpt-4o-mini', groq:'llama3-70b-8192', gemini:'gemini-2.0-flash' };
+  const model = aiModel || defaults[aiProvider] || 'openai/gpt-4o-mini';
+  const url = endpoints[aiProvider];
+  if (!url) return Promise.reject('Proveedor no soportado');
+  const headers = { 'Content-Type': 'application/json' };
+  if (aiProvider === 'gemini') {
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${aiKey}`;
+    return fetch(geminiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: messages.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] })) }) })
+      .then(async r => {
+        const d = await r.json();
+        if(!r.ok) return { text: 'Error ' + r.status + ': ' + (d?.error?.message || JSON.stringify(d)) };
+        return { text: d?.candidates?.[0]?.content?.parts?.[0]?.text || 'Error: respuesta vacía' };
+      });
+  }
+  headers['Authorization'] = `Bearer ${aiKey}`;
+  return fetch(url, { method: 'POST', headers, body: JSON.stringify({ model, messages, temperature: 0.7, max_tokens: 2000 }) })
+    .then(async r => {
+      const d = await r.json();
+      if(!r.ok) return { text: 'Error ' + r.status + ': ' + (d?.error?.message || JSON.stringify(d)) };
+      return { text: d?.choices?.[0]?.message?.content || 'Error: respuesta vacía' };
+    })
+    .catch(e => ({ text: 'Error de conexión: ' + e.message }));
+}
+
+function renderAI() {
+  const el = document.getElementById('aiResults');
+  const hasKey = !!state.settings.aiKey;
+  el.innerHTML = `
+    <div class="ai-card" style="border-left:4px solid var(--accent);margin-bottom:14px">
+      <div class="ai-card-header">
+        <div class="ai-card-icon">🤖</div>
+        <div class="ai-card-title">Agente organizador</div>
+      </div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.6;margin-bottom:12px">
+        ${hasKey ? 'Tu secretaria IA está lista. Analiza tus proyectos y genera un plan diario.' : 'Configura una API key en Ajustes para activar el agente IA.'}
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-accent" onclick="aiDailyReview()">📋 Revisión diaria</button>
+        <button class="btn btn-ghost" onclick="aiWeeklyPlan()">📅 Plan semanal</button>
+        <button class="btn btn-ghost" onclick="aiPriorityCheck()">🎯 Priorizar</button>
+        <button class="btn btn-ghost" onclick="aiGeneratePlan()" ${!hasKey?'':'style="display:none"'}>Plan local (sin API)</button>
+      </div>
+      ${!hasKey ? `<div style="margin-top:12px;padding:10px 14px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:var(--rsm);font-size:13px">
+        ⚡ Sin API key. Los planes serán básicos. <span style="color:var(--accent2);cursor:pointer" onclick="openSettings()">Configurar →</span>
+      </div>` : ''}
+    </div>
+    <div id="aiResultsContent"></div>`;
+  if(!hasKey) aiGeneratePlan(); // show basic plan as fallback
+}
+
+function showAILoading() {
+  const el = document.getElementById('aiResultsContent');
+  if(!el) return;
+  el.innerHTML = `<div class="ai-loading"><div class="ai-loading-dot"></div><div class="ai-loading-dot"></div><div class="ai-loading-dot"></div><span style="margin-left:8px">Analizando tus proyectos...</span></div>`;
+}
+
+function buildAIContext() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  const projectsData = state.projects.map(p => `${p.name} | Estado: ${p.status} | Progreso: ${p.progress}% | Prioridad: ${p.priority} | Cliente: ${p.client||'-'} | Siguiente: ${p.next||'-'}`).join('\n');
+  const overdueTasks = state.tasks.filter(t => !t.done && isPast(t.dueDate)).map(t => `⚠ VENCIDA: ${t.title} (vencía ${t.dueDate})`).join('\n');
+  const todayTasks = state.tasks.filter(t => !t.done && isToday(t.dueDate)).map(t => `☀ HOY: ${t.title} [P${t.priority}]`).join('\n');
+  const highPrioTasks = state.tasks.filter(t => !t.done && t.priority <= 2 && !t.dueDate).map(t => `🔴 PRIORIDAD: ${t.title} (${getProject(t.projectId)?.name||'Bandeja'})`).join('\n');
+  return `Fecha: ${dateStr}\n\nPROYECTOS (${state.projects.length}):\n${projectsData}\n\nTAREAS VENCIDAS:\n${overdueTasks||'Ninguna'}\n\nTAREAS DE HOY:\n${todayTasks||'Ninguna'}\n\nTAREAS PRIORITARIAS SIN FECHA:\n${highPrioTasks||'Ninguna'}\n\nTotal tareas pendientes: ${state.tasks.filter(t=>!t.done).length}\nTotal proyectos activos: ${state.projects.filter(p=>p.status==='Activo').length}`;
+}
+
+function aiDailyReview() {
+  showAILoading();
+  if(!state.settings.aiKey) { aiGeneratePlan(); return; }
+  const ctx = buildAIContext();
+  aiAgentCall([
+    { role: 'system', content: AI_PROMPT },
+    { role: 'user', content: `Haz una revisión diaria de mis proyectos y dime qué hacer hoy.\n\n${ctx}` }
+  ]).then(res => {
+    const el = document.getElementById('aiResultsContent');
+    if(!el) return;
+    el.innerHTML = `<div class="ai-card" style="border-left:4px solid var(--green)">
+      <div class="ai-card-header"><div class="ai-card-icon">📋</div><div class="ai-card-title">Revisión diaria — ${new Date().toLocaleDateString('es-ES',{day:'numeric',month:'short'})}</div></div>
+      <div style="font-size:13px;line-height:1.8;color:var(--t1);white-space:pre-wrap">${esc(res.text)}</div>
+    </div>`;
+  }).catch(err => {
+    const el = document.getElementById('aiResultsContent');
+    if(el) el.innerHTML = `<div class="ai-card" style="border-left:4px solid var(--red)"><div class="ai-card-header"><div class="ai-card-icon">⚠️</div><div class="ai-card-title">Error</div></div><div style="font-size:13px;color:var(--t2)">${esc(typeof err === 'string' ? err : err.message || 'Error de conexión')}</div></div>`;
+  });
+}
+
+function aiWeeklyPlan() {
+  showAILoading();
+  if(!state.settings.aiKey) { aiGeneratePlan(); return; }
+  const ctx = buildAIContext();
+  aiAgentCall([
+    { role: 'system', content: AI_PROMPT },
+    { role: 'user', content: `Organízame la semana. ¿Qué proyecto debería hacer cada día? Dame un plan día por día.\n\n${ctx}` }
+  ]).then(res => {
+    const el = document.getElementById('aiResultsContent');
+    if(!el) return;
+    el.innerHTML = `<div class="ai-card" style="border-left:4px solid var(--accent)">
+      <div class="ai-card-header"><div class="ai-card-icon">📅</div><div class="ai-card-title">Plan semanal</div></div>
+      <div style="font-size:13px;line-height:1.8;color:var(--t1);white-space:pre-wrap">${esc(res.text)}</div>
+    </div>`;
+  }).catch(err => {
+    const el = document.getElementById('aiResultsContent');
+    if(el) el.innerHTML = `<div class="ai-card" style="border-left:4px solid var(--red)"><div class="ai-card-header"><div class="ai-card-icon">⚠️</div><div class="ai-card-title">Error</div></div><div style="font-size:13px;color:var(--t2)">${esc(typeof err === 'string' ? err : err.message || 'Error de conexión')}</div></div>`;
+  });
+}
+
+function aiPriorityCheck() {
+  showAILoading();
+  if(!state.settings.aiKey) { aiAnalyze(); return; }
+  const ctx = buildAIContext();
+  aiAgentCall([
+    { role: 'system', content: AI_PROMPT },
+    { role: 'user', content: `Revisa mis proyectos y dime cuáles necesitan atención URGENTE hoy. Prioriza del 1 al 5.\n\n${ctx}` }
+  ]).then(res => {
+    const el = document.getElementById('aiResultsContent');
+    if(!el) return;
+    el.innerHTML = `<div class="ai-card" style="border-left:4px solid var(--red)">
+      <div class="ai-card-header"><div class="ai-card-icon">🎯</div><div class="ai-card-title">Prioridades del día</div></div>
+      <div style="font-size:13px;line-height:1.8;color:var(--t1);white-space:pre-wrap">${esc(res.text)}</div>
+    </div>`;
+  }).catch(err => {
+    const el = document.getElementById('aiResultsContent');
+    if(el) el.innerHTML = `<div class="ai-card" style="border-left:4px solid var(--red)"><div class="ai-card-header"><div class="ai-card-icon">⚠️</div><div class="ai-card-title">Error</div></div><div style="font-size:13px;color:var(--t2)">${esc(typeof err === 'string' ? err : err.message || 'Error de conexión')}</div></div>`;
+  });
+}
+
+/* ══════════════════════════════════════════
+   AI PLANNING ASSISTANT (fallback local)
+═════════════════════════════════════════ */
+
+function aiGeneratePlan() {
+  const el = document.getElementById('aiResults');
+  const todayStr = today();
+  const weekTasks = state.tasks.filter(t => !t.done && t.dueDate && !isPast(t.dueDate) && isThisWeek(t.dueDate)).sort((a,b)=>a.dueDate.localeCompare(b.dueDate));
+  const overdueTasks = state.tasks.filter(t => !t.done && isPast(t.dueDate));
+  const highPriority = state.tasks.filter(t => !t.done && t.priority<=2 && !t.dueDate);
+
+  let html = `<div style="display:grid;gap:14px">`;
+
+  // Plan header
+  const d = new Date();
+  const weekStart = new Date(d); weekStart.setDate(d.getDate()-d.getDay()+1);
+  const weekEnd = new Date(weekStart); weekEnd.setDate(weekStart.getDate()+6);
+  html += `<div class="ai-card" style="border-left:4px solid var(--accent)">
+    <div class="ai-card-header">
+      <div class="ai-card-icon">📋</div>
+      <div class="ai-card-title">Plan semanal: ${weekStart.toLocaleDateString('es-ES',{day:'numeric',month:'short'})} — ${weekEnd.toLocaleDateString('es-ES',{day:'numeric',month:'short'})}</div>
+    </div>`;
+
+  // Overdue alert
+  if(overdueTasks.length > 0) {
+    html += `<div style="padding:10px 14px;background:rgba(240,92,92,.1);border:1px solid rgba(240,92,92,.3);border-radius:var(--rsm);margin-bottom:12px">
+      <div style="font-size:13px;font-weight:700;color:var(--red);margin-bottom:6px">⚠ ${overdueTasks.length} tareas vencidas</div>
+      <div style="font-size:12px;color:var(--t2)">Prioriza estas tareas antes de empezar nuevas.</div>
+    </div>`;
+  }
+
+  // Day by day plan
+  const dayNames = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+  for(let i=0;i<7;i++) {
+    const dt = new Date(weekStart); dt.setDate(weekStart.getDate()+i);
+    const dateStr = dt.toISOString().slice(0,10);
+    const dayTasks = weekTasks.filter(t => t.dueDate === dateStr);
+    const isT = dateStr === todayStr;
+    html += `<div style="margin-bottom:8px;padding:8px 12px;background:var(--s3);border-radius:var(--rsm);${isT?'border-left:3px solid var(--accent)':''}">
+      <div style="font-size:12px;font-weight:700;color:${isT?'var(--accent2)':'var(--t2)'};margin-bottom:4px">${dayNames[i]}${isT?' (Hoy)':''}</div>
+      ${dayTasks.length > 0 ? dayTasks.map(t => {
+        const p = getProject(t.projectId);
+        return `<div style="font-size:12px;color:var(--t1);padding:2px 0">${t.priority<=2?'🔴':'•'} ${esc(t.title)} ${p?`<span style="color:var(--t3)">— ${esc(p.name)}</span>`:''}</div>`;
+      }).join('') : `<div style="font-size:11px;color:var(--t3)">Sin tareas programadas</div>`}
+    </div>`;
+  }
+  html += `</div>`;
+
+  // Recommendations
+  html += `<div class="ai-card">
+    <div class="ai-card-header">
+      <div class="ai-card-icon">💡</div>
+      <div class="ai-card-title">Recomendaciones</div>
+    </div>
+    <div style="font-size:13px;color:var(--t2);line-height:1.8">
+      ${overdueTasks.length > 0 ? `<div>⚠ Tienes <strong>${overdueTasks.length} tareas vencidas</strong>. Dedica tiempo hoy a resolverlas.</div>` : ''}
+      ${highPriority.length > 0 ? `<div>🔴 Hay <strong>${highPriority.length} tareas de alta prioridad</strong> sin fecha asignada. Programa esta semana las más importantes.</div>` : ''}
+      ${state.projects.filter(p=>p.status==='Activo' && p.progress<50).length > 0 ? `<div>📊 Proyectos con menos del 50% de avance: enfócate en <strong>${state.projects.filter(p=>p.status==='Activo').sort((a,b)=>a.progress-b.progress)[0]?.name||''}</strong></div>` : ''}
+      <div>✅ Llevas <strong>${state.tasks.filter(t=>t.done&&t.doneAt===today()).length} tareas completadas</strong> hoy.</div>
+    </div>
+  </div>`;
+
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function aiAnalyze() {
+  const el = document.getElementById('aiResults');
+  const total = state.tasks.length;
+  const done = state.tasks.filter(t => t.done).length;
+  const pending = total - done;
+  const overdue = state.tasks.filter(t => !t.done && isPast(t.dueDate)).length;
+  const noDate = state.tasks.filter(t => !t.done && !t.dueDate).length;
+  const highPrio = state.tasks.filter(t => !t.done && t.priority<=2).length;
+  const activeProjs = state.projects.filter(p => p.status==='Activo').length;
+  const avgProgress = state.projects.length > 0 ? Math.round(state.projects.reduce((s,p) => s+Number(p.progress||0),0)/state.projects.length) : 0;
+  const projectsByClient = {};
+  state.projects.forEach(p => { projectsByClient[p.client] = (projectsByClient[p.client]||0)+1; });
+  const topClient = Object.entries(projectsByClient).sort((a,b)=>b[1]-a[1])[0];
+
+  let html = `<div style="display:grid;gap:14px">`;
+  html += `<div class="ai-card" style="border-left:4px solid var(--accent)">
+    <div class="ai-card-header">
+      <div class="ai-card-icon">🔍</div>
+      <div class="ai-card-title">Análisis de carga de trabajo</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0">
+      <div style="text-align:center;padding:12px;background:var(--s3);border-radius:var(--rsm)">
+        <div style="font-size:22px;font-weight:800;color:var(--green)">${done}</div><div style="font-size:11px;color:var(--t3)">Completadas</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:var(--s3);border-radius:var(--rsm)">
+        <div style="font-size:22px;font-weight:800;color:var(--amber)">${pending}</div><div style="font-size:11px;color:var(--t3)">Pendientes</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:var(--s3);border-radius:var(--rsm)">
+        <div style="font-size:22px;font-weight:800;color:${overdue>0?'var(--red)':'var(--green)'}">${overdue}</div><div style="font-size:11px;color:var(--t3)">Vencidas</div>
+      </div>
+    </div>
+    <div style="font-size:13px;color:var(--t2);line-height:1.8">
+      <div>📊 Tasa de compleción: <strong>${total>0 ? Math.round(done/total*100) : 0}%</strong></div>
+      <div>🔴 Tareas prioritarias sin hacer: <strong>${highPrio}</strong></div>
+      <div>📅 Tareas sin fecha: <strong>${noDate}</strong></div>
+      <div>📁 Proyectos activos: <strong>${activeProjs}</strong> de ${state.projects.length}</div>
+      <div>📈 Avance medio del portfolio: <strong>${avgProgress}%</strong></div>
+      ${topClient ? `<div>🏷️ Área con más proyectos: <strong>${topClient[0]}</strong> (${topClient[1]})</div>` : ''}
+      <div style="margin-top:8px;padding:10px;background:var(--s3);border-radius:var(--rsm)">
+        <div style="font-weight:700;margin-bottom:4px">💡 Recomendación</div>
+        <div style="color:var(--t2)">${overdue > 3 ? 'Tienes varias tareas vencidas. Bloquea 2h hoy para resolver las más críticas.' : highPrio > 5 ? 'Hay muchas tareas de alta prioridad. Reduce el alcance y enfócate en las 3 más importantes.' : 'Tu carga de trabajo es equilibrada. Sigue así!'}</div>
+      </div>
+    </div>
+  </div>`;
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function aiSuggestNext() {
+  const el = document.getElementById('aiResults');
+  const candidates = [];
+
+  // Collect next actions from projects
+  state.projects.filter(p => p.status==='Activo' && p.next).forEach(p => {
+    candidates.push({ type:'proyecto', projectId:p.id, title:p.next, priority:p.priority==='Alta'?1:3, projectName:p.name });
+  });
+
+  // High priority undone tasks
+  state.tasks.filter(t => !t.done && t.priority<=2).forEach(t => {
+    const p = getProject(t.projectId);
+    candidates.push({ type:'tarea', projectId:t.projectId, title:t.title, priority:t.priority, projectName:p?.name||'Bandeja' });
+  });
+
+  // Low progress active projects
+  state.projects.filter(p => p.status==='Activo' && p.progress < 50).forEach(p => {
+    candidates.push({ type:'empuje', projectId:p.id, title:`Avanzar ${p.name} — está al ${p.progress}%`, priority:2, projectName:p.name });
+  });
+
+  // Sort by priority
+  candidates.sort((a,b) => a.priority - b.priority);
+
+  // Remove duplicates
+  const seen = new Set();
+  const unique = candidates.filter(c => {
+    const key = c.title;
+    if(seen.has(key)) return false;
+    seen.add(key); return true;
+  }).slice(0,10);
+
+  let html = `<div style="display:grid;gap:14px">`;
+  html += `<div class="ai-card" style="border-left:4px solid var(--green)">
+    <div class="ai-card-header">
+      <div class="ai-card-icon">💡</div>
+      <div class="ai-card-title">Próximos pasos sugeridos (${unique.length})</div>
+    </div>
+    <div style="font-size:12px;color:var(--t2);margin-bottom:12px">Basado en prioridad, progreso y tareas pendientes</div>
+    ${unique.length === 0 ? '<div style="color:var(--t3);padding:10px">Sin sugerencias disponibles</div>' :
+      unique.map((c,i) => `<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:var(--rsm);cursor:pointer;transition:background .15s" onmouseenter="this.style.background='var(--s3)'" onmouseleave="this.style.background=''" onclick="${c.type==='tarea'?'openDetail':'navigate'}('${c.type==='tarea'?c.projectId:'project'}','${c.projectId}')">
+        <div style="width:24px;height:24px;border-radius:6px;background:${c.priority===1?'rgba(240,92,92,.2)':c.priority===2?'rgba(245,158,11,.2)':'var(--s3)'};display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0">
+          ${c.priority===1?'🔴':c.priority===2?'🟡':'🔵'}
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:600">${esc(c.title)}</div>
+          <div style="font-size:11px;color:var(--t3)">${esc(c.projectName)} ${c.type==='empuje'?'⚠ rezagado':''}</div>
+        </div>
+        <div style="font-size:10px;padding:2px 6px;border-radius:4px;background:var(--s3);color:var(--t3)">#${i+1}</div>
+      </div>`).join('')}
+  </div>`;
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+/* ══════════════════════════════════════════
+   KANBAN DRAG & DROP
+═════════════════════════════════════════ */
+function initKanbanDnD(container) {
+  const cards = container.querySelectorAll('.kanban-card');
+  const cols = container.querySelectorAll('.kanban-col');
+  cards.forEach(card => {
+    card.setAttribute('draggable', 'true');
+    card.addEventListener('dragstart', onDragStart);
+    card.addEventListener('dragend', onDragEnd);
+  });
+  cols.forEach(col => {
+    col.addEventListener('dragover', onDragOver);
+    col.addEventListener('dragenter', onDragEnter);
+    col.addEventListener('dragleave', onDragLeave);
+    col.addEventListener('drop', onDrop);
+  });
+}
+
+function onDragStart(e) {
+  e.target.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', e.target.dataset.taskId || '');
+}
+
+function onDragEnd(e) {
+  e.target.classList.remove('dragging');
+  document.querySelectorAll('.kanban-col').forEach(c => c.classList.remove('drag-over'));
+}
+
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+}
+
+function onDragEnter(e) {
+  e.preventDefault();
+  const col = e.target.closest('.kanban-col');
+  if(col) col.classList.add('drag-over');
+}
+
+function onDragLeave(e) {
+  const col = e.target.closest('.kanban-col');
+  if(col && !col.contains(e.relatedTarget)) col.classList.remove('drag-over');
+}
+
+function onDrop(e) {
+  e.preventDefault();
+  const col = e.target.closest('.kanban-col');
+  if(!col) return;
+  col.classList.remove('drag-over');
+  const taskId = e.dataTransfer.getData('text/plain');
+  if(!taskId) return;
+  const task = getTask(taskId);
+  if(!task) return;
+  const newStatus = col.dataset.status;
+  if(!newStatus) return;
+  task.status = newStatus;
+  if(newStatus === 'done') { task.done = true; task.doneAt = today(); }
+  else { task.done = false; task.doneAt = null; }
+  save();
+  renderProject();
+  showToast('✓ Tarea movida a ' + col.querySelector('.kc-title')?.textContent);
+}
+
+/* ══════════════════════════════════════════
+   DRAG & DROP ENHANCED BOARD
+═════════════════════════════════════════ */
+function renderProjectBoard(p) {
+  const el = document.getElementById('projectBoardView');
+  const statuses = [
+    {key:'todo', label:'Por hacer', color:'var(--t3)'},
+    {key:'doing', label:'En progreso', color:'var(--amber)'},
+    {key:'review', label:'Revisión', color:'var(--blue)'},
+    {key:'done', label:'Completado', color:'var(--green)'},
+  ];
+  const tasks = state.tasks.filter(t => t.projectId === p.id);
+  el.innerHTML = statuses.map(s => {
+    const sts = tasks.filter(t => (s.key==='done'?t.done:(t.status||'todo')===s.key && !t.done));
+    return `<div class="kanban-col" data-status="${s.key}">
+      <div class="kanban-col-head">
+        <div class="kc-dot" style="background:${s.color}"></div>
+        <div class="kc-title">${s.label}</div>
+        <div class="kc-count">${sts.length}</div>
+      </div>
+      <div class="kanban-cards">${sts.length===0?'<div style="color:var(--t3);font-size:12px;text-align:center;padding:16px">Vacío</div>':
+        sts.map(t=>`<div class="kanban-card" draggable="true" data-task-id="${t.id}" onclick="openDetail('${t.id}')">
+          <div class="kcard-title">${esc(t.title)}</div>
+          <div class="kcard-meta">
+            ${t.priority<4?`<span class="task-tag ${taskPrioClass(t.priority)}">${taskPrioLabel(t.priority)}</span>`:''}
+            ${t.dueDate?`<span class="task-date ${isPast(t.dueDate)?'overdue':isToday(t.dueDate)?'today':''}">📅 ${fmt(t.dueDate)}</span>`:''}
+            ${(t.subtasks||[]).length > 0 ? `<span class="task-date">☑ ${t.subtasks.filter(s=>s.done).length}/${t.subtasks.length}</span>` : ''}
+          </div>
+        </div>`).join('')}
+      </div>
+      <div class="kanban-add" onclick="openQuickAddWithStatus('${s.key}')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Añadir
+      </div>
+    </div>`;
+  }).join('') + `<div class="kanban-new-col">+ Columna</div>`;
+
+  // Init drag & drop after DOM is ready
+  setTimeout(() => initKanbanDnD(el), 50);
+}
+
+/* ══════════════════════════════════════════
+   TAG SYSTEM
+═════════════════════════════════════════ */
+function renderTagsInput(containerId, taskId) {
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  const task = getTask(taskId);
+  if(!task) return;
+  const tags = task.tags || [];
+  el.innerHTML = tags.map(t => `<span class="tag-chip" style="background:${t.color}20;color:${t.color};border-color:${t.color}40">${esc(t.name)}</span>`).join('')
+    + `<input class="tag-input" placeholder="Añadir tag..." onkeydown="handleTagInput(event,'${taskId}')">`;
+}
+
+function handleTagInput(e, taskId) {
+  if(e.key === 'Enter') {
+    e.preventDefault();
+    const val = e.target.value.trim();
+    if(!val) return;
+    const task = getTask(taskId);
+    if(!task) return;
+    if(!task.tags) task.tags = [];
+    const colors = ['#7c5cfc','#f05c5c','#f59e0b','#2dd4a0','#60a5fa','#f472b6','#a78bfa'];
+    task.tags.push({ name: val, color: colors[task.tags.length % colors.length] });
+    save();
+    e.target.value = '';
+    renderTagsInput(containerId, taskId);
+  }
+}
+
+/* ══════════════════════════════════════════
+   ENHANCED TASK DETAIL WITH TAGS
+═════════════════════════════════════════ */
+function openDetail(id) {
+  const t = getTask(id);
+  if(!t) return;
+  state.currentTaskId = id;
+  const p = getProject(t.projectId);
+  document.getElementById('dpProjectLabel').textContent = p ? `${p.icon} ${p.name}` : 'Bandeja de entrada';
+  document.getElementById('dpTitle').textContent = t.title;
+  document.getElementById('dpDate').value = t.dueDate || '';
+  document.getElementById('dpNotes').innerHTML = t.notes || '';
+  // Priority buttons
+  const prioEl = document.getElementById('dpPriority');
+  prioEl.innerHTML = [1,2,3,4].map(n => `<button class="prio-btn p${n} ${t.priority===n?'selected':''}" onclick="setDetailPriority(${n})">${taskPrioLabel(n)}</button>`).join('');
+  // Project select
+  populateProjectSelect('dpProject');
+  document.getElementById('dpProject').value = t.projectId || '';
+  // Tags
+  renderTagsInput('dpTags', id);
+  renderSubtasks();
+  document.getElementById('detailPanel').classList.add('show');
+}
+
+/* ══════════════════════════════════════════
    INIT
-══════════════════════════════════════════ */
+═════════════════════════════════════════ */
 function init() {
   load();
-  // Default projects if none
   if(state.projects.length===0) {
-    state.projects.push({ id:uid(), name:'Personal', color:'#7c5cfc', icon:'🏠', createdAt:Date.now() });
-    state.projects.push({ id:uid(), name:'Trabajo', color:'#2dd4a0', icon:'💼', createdAt:Date.now() });
+    state.projects = SEED_PROJECTS.map(p => ({...p, createdAt:Date.now(), color:p.color||PROJECT_COLORS[Math.floor(Math.random()*PROJECT_COLORS.length)], icon:p.icon||PROJECT_ICONS_EXT[Math.floor(Math.random()*PROJECT_ICONS_EXT.length)]}));
+    state.tasks = SEED_TASKS.map(t => ({...t}));
+    save();
+  } else {
+    // Merge new projects & backfill missing fields
+    var existingIds = new Set(state.projects.map(function(p) { return p.id; }));
+    SEED_PROJECTS.forEach(function(p) {
+      var exist = state.projects.find(function(x) { return x.id === p.id; });
+      if(exist) {
+        if(!exist.link && p.link) exist.link = p.link;
+        if(!exist.folder && p.folder) exist.folder = p.folder;
+        if(!exist.githubLink && p.githubLink) exist.githubLink = p.githubLink;
+        if(!exist.netlifyLink && p.netlifyLink) exist.netlifyLink = p.netlifyLink;
+      } else {
+        state.projects.push({...p, createdAt:Date.now()});
+      }
+    });
     save();
   }
+  loadTheme();
   renderSidebar();
   renderDashboard();
   // Keyboard shortcut hint

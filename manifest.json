@@ -1,12 +1,22 @@
 {
-  "name": "Flow — Tu espacio de trabajo",
-  "short_name": "Flow",
-  "start_url": "./index.html",
+  "name": "Flow Hub — Gestor de Proyectos con IA",
+  "short_name": "Flow Hub",
+  "description": "Gestor de proyectos, tareas, kanban, calendario, gráficas y planificación con IA",
+  "start_url": "/index.html",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#0d0d10",
-  "theme_color": "#0d0d10",
+  "theme_color": "#7c5cfc",
+  "prefer_related_applications": false,
   "icons": [
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
-  ]
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "categories": ["productivity", "project management"],
+  "lang": "es",
+  "screenshots": [],
+  "edge_side_panel": {}
 }
