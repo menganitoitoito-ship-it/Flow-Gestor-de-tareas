@@ -964,6 +964,35 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--t1);font-
   </div>
 </div>
 
+<!-- Project Links Editor -->
+<div class="overlay" id="overlayProjectLinks" onclick="if(event.target===this)closeOverlay('overlayProjectLinks')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-title">🔗 Enlaces del proyecto <button class="modal-close" onclick="closeOverlay('overlayProjectLinks')">✕</button></div>
+    <input type="hidden" id="plProjectId">
+    <div class="form-group">
+      <label class="form-label">🌐 Web / URL</label>
+      <input class="form-input" id="plWeb" placeholder="https://..." style="font-size:13px">
+    </div>
+    <div class="form-group">
+      <label class="form-label">📁 App / Carpeta / Deep Link</label>
+      <input class="form-input" id="plFolder" placeholder="/ruta/local o myapp://scheme" style="font-size:13px">
+      <div style="font-size:11px;color:var(--t3);margin-top:3px">En móvil usa <code>myapp://</code> o <code>https://</code>. En PC acepta rutas locales.</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">🐙 GitHub</label>
+      <input class="form-input" id="plGithub" placeholder="https://github.com/user/repo" style="font-size:13px">
+    </div>
+    <div class="form-group">
+      <label class="form-label">▲ Netlify</label>
+      <input class="form-input" id="plNetlify" placeholder="https://app.netlify.com/sites/..." style="font-size:13px">
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="closeOverlay('overlayProjectLinks')">Cancelar</button>
+      <button class="btn btn-accent" onclick="saveProjectLinks()">✓ Guardar</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
@@ -1539,10 +1568,11 @@ function renderAllProjects() {
         <span class="proj-card-tag" style="background:var(--s3);color:var(--t3)">${taskCount} tareas</span>
       </div>
       <div class="proj-card-actions" onclick="event.stopPropagation()">
-        ${p.link ? `<a class="proj-card-btn" href="${esc(p.link)}" target="_blank" rel="noreferrer">🌐 Abrir</a>` : ''}
-        ${folderPath ? `<a class="proj-card-btn" href="${esc(folderPath)}" target="_blank" rel="noreferrer">📂 Carpeta</a>` : ''}
+        ${p.link ? `<a class="proj-card-btn" href="${esc(p.link)}" target="_blank" rel="noreferrer">🌐 Web</a>` : ''}
+        ${p.folder ? `<a class="proj-card-btn" href="${esc(p.folder)}" target="_blank" rel="noreferrer">📁 App</a>` : ''}
         ${p.githubLink ? `<a class="proj-card-btn" href="${esc(p.githubLink)}" target="_blank" rel="noreferrer" style="color:#6e5494">GitHub</a>` : ''}
         ${p.netlifyLink ? `<a class="proj-card-btn" href="${esc(p.netlifyLink)}" target="_blank" rel="noreferrer" style="color:#00ad9f">Netlify</a>` : ''}
+        <span class="proj-card-btn" onclick="openProjectLinks('${p.id}')" style="cursor:pointer;opacity:.5">✏️</span>
       </div>
       <div class="proj-card-progress"><div class="proj-card-progress-fill" style="width:${Math.min(100,Number(p.progress||0))}%;background:${p.color}"></div></div>
     </div>`;
@@ -1622,10 +1652,11 @@ function renderProjectList(p) {
       ${p.progress !== undefined ? `<span class="filter-chip" style="cursor:default;background:var(--s3);border-color:transparent;color:var(--t2)">${p.progress}%</span>` : ''}
     </div>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
-      ${p.link ? `<a class="tb-btn" href="${esc(p.link)}" target="_blank" rel="noreferrer" style="text-decoration:none">🌐 Abrir web</a>` : ''}
-      ${folderPath ? `<a class="tb-btn" href="${esc(folderPath)}" target="_blank" rel="noreferrer" style="text-decoration:none">📂 Abrir carpeta</a>` : ''}
+      ${p.link ? `<a class="tb-btn" href="${esc(p.link)}" target="_blank" rel="noreferrer" style="text-decoration:none">🌐 Web</a>` : ''}
+      ${p.folder ? `<a class="tb-btn" href="${esc(p.folder)}" target="_blank" rel="noreferrer" style="text-decoration:none">📁 App</a>` : ''}
       ${p.githubLink ? `<a class="tb-btn" href="${esc(p.githubLink)}" target="_blank" rel="noreferrer" style="text-decoration:none;color:#6e5494">🐙 GitHub</a>` : ''}
       ${p.netlifyLink ? `<a class="tb-btn" href="${esc(p.netlifyLink)}" target="_blank" rel="noreferrer" style="text-decoration:none;color:#00ad9f">▲ Netlify</a>` : ''}
+      <button class="tb-btn" onclick="event.stopPropagation();openProjectLinks('${p.id}')" style="opacity:.6">✏️</button>
     </div>
     ${p.next ? `<div style="padding:8px 12px;background:var(--s3);border-radius:var(--rsm);margin-bottom:12px;font-size:13px"><span style="color:var(--t3)">▶ Próximo paso:</span> <span style="color:var(--t1);font-weight:500">${esc(p.next)}</span></div>` : ''}
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
@@ -1641,6 +1672,32 @@ function renderProjectList(p) {
   if(active.length===0&&done.length===0) html += `<div class="empty-state"><div class="empty-state-icon">${p.icon}</div><div class="empty-state-title">Proyecto vacío</div><div class="empty-state-sub">Añade tu primera tarea</div></div>`;
   html += `<div style="padding:0 10px 20px">${addTaskRowHTML()}</div>`;
   el.innerHTML = html;
+}
+
+function openProjectLinks(id) {
+  var p = getProject(id);
+  if(!p) return;
+  document.getElementById('plProjectId').value = id;
+  p = state.projects.find(function(x) { return x.id === id; });
+  document.getElementById('plWeb').value = p.link || '';
+  document.getElementById('plFolder').value = p.folder || '';
+  document.getElementById('plGithub').value = p.githubLink || '';
+  document.getElementById('plNetlify').value = p.netlifyLink || '';
+  openOverlay('overlayProjectLinks');
+}
+function saveProjectLinks() {
+  var id = document.getElementById('plProjectId').value;
+  var p = state.projects.find(function(x) { return x.id === id; });
+  if(!p) return;
+  p.link = document.getElementById('plWeb').value || '';
+  p.folder = document.getElementById('plFolder').value || '';
+  p.githubLink = document.getElementById('plGithub').value || '';
+  p.netlifyLink = document.getElementById('plNetlify').value || '';
+  save();
+  closeOverlay('overlayProjectLinks');
+  renderProject();
+  renderSidebar();
+  showToast('✅ Enlaces guardados');
 }
 
 /* Replaced by enhanced drag & drop version below */
