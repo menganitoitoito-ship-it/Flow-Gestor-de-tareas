@@ -1079,8 +1079,12 @@ function openProjectLink(id) {
   const p = getProject(id);
   if(!p) return;
   const link = p.link || p.folder;
-  if(link) { window.open(link, '_blank'); showToast(`↗ Abriendo ${esc(p.name)}`); }
+  if(link) { openLink(link); showToast(`↗ Abriendo ${esc(p.name)}`); }
   else showToast('Este proyecto no tiene ruta asignada');
+}
+function openLink(url) {
+  if(url.startsWith('http://')||url.startsWith('https://')) { window.open(url, '_blank'); }
+  else { window.location.href = url; }
 }
 function getNote(id) { return state.notes.find(n => n.id === id); }
 function taskPrioClass(p) { return ['','tag-p1','tag-p2','tag-p3','tag-p4'][p||4]; }
@@ -1098,17 +1102,17 @@ const PROJECT_COLORS = ['#7c5cfc','#f05c5c','#f59e0b','#2dd4a0','#60a5fa','#f472
 const PROJECT_ICONS_EXT = ['📁','🚀','💼','🎯','🏠','📚','💡','🎨','⚙️','🌟','💰','🏋️','🎵','🌿','🔬','📊','🤖','🧠','🗂','🎮'];
 
 const SEED_PROJECTS = [
-  {id:'p-project-os',name:'Project OS',color:'#7c5cfc',icon:'📁',status:'Activo',progress:40,priority:'Alta',client:'Organización personal',link:'./index.html',folder:'/Users/fjramos8/Project OS',githubLink:'https://github.com/fjramos8/project-os',description:'Sistema operativo personal.',next:'Mantener actualizado el inventario.'},
-  {id:'p-trading-hub-pro',name:'Trading Hub Pro',color:'#2dd4a0',icon:'💰',status:'Activo',progress:72,priority:'Alta',client:'Trading / finanzas',link:'http://localhost:5173',folder:'/Users/fjramos8/Trading Hub Pro',githubLink:'https://github.com/fjramos8/trading-hub-pro',description:'Plataforma de trading con agentes.',next:'Revisar agentes y limpiar scripts de prueba.'},
+  {id:'p-project-os',name:'Project OS',color:'#7c5cfc',icon:'📁',status:'Activo',progress:40,priority:'Alta',client:'Organización personal',link:'./index.html',folder:'/Users/fjramos8/Project OS',description:'Sistema operativo personal.',next:'Mantener actualizado el inventario.'},
+  {id:'p-trading-hub-pro',name:'Trading Hub Pro',color:'#2dd4a0',icon:'💰',status:'Activo',progress:72,priority:'Alta',client:'Trading / finanzas',link:'http://localhost:5173',folder:'/Users/fjramos8/Trading Hub Pro',description:'Plataforma de trading con agentes.',next:'Revisar agentes y limpiar scripts de prueba.'},
   {id:'p-fiscalflow',name:'FiscalFlow Tax Suite',color:'#f59e0b',icon:'📊',status:'Activo',progress:78,priority:'Alta',client:'Finanzas / fiscalidad',folder:'/Users/fjramos8/FiscalFlow',description:'Suite fiscal con servidor local.',next:'Revisar integridad de datos.'},
-  {id:'p-crypto-tax',name:'Crypto-Tax',color:'#f05c5c',icon:'💰',status:'Activo',progress:50,priority:'Alta',client:'Crypto / fiscalidad',folder:'/Users/fjramos8/Crypto-Tax',githubLink:'https://github.com/fjramos8/crypto-tax',description:'Herramienta para impuestos crypto.',next:'Revisar compatibilidad con renta 2025.'},
+  {id:'p-crypto-tax',name:'Crypto-Tax',color:'#f05c5c',icon:'💰',status:'Activo',progress:50,priority:'Alta',client:'Crypto / fiscalidad',folder:'/Users/fjramos8/Crypto-Tax',description:'Herramienta para impuestos crypto.',next:'Revisar compatibilidad con renta 2025.'},
   {id:'p-renta-2025',name:'Declaración Renta 2025',color:'#fb923c',icon:'📋',status:'Activo',progress:60,priority:'Alta',client:'Fiscalidad personal',folder:'/Users/fjramos8/Renta 2025',description:'Documentación para la renta 2025.',next:'Cerrar cálculos pendientes.'},
-  {id:'p-nocturnal',name:'The Nocturnal (Music Pro)',color:'#f472b6',icon:'🎵',status:'Activo',progress:85,priority:'Media',client:'Personal / Audio',link:'http://localhost:4000',folder:'/Users/fjramos8/Nocturnal',githubLink:'https://github.com/fjramos8/nocturnal',description:'Reproductor de música avanzado PWA.',next:'Probar widget de música.'},
+  {id:'p-nocturnal',name:'The Nocturnal (Music Pro)',color:'#f472b6',icon:'🎵',status:'Activo',progress:85,priority:'Media',client:'Personal / Audio',link:'http://localhost:4000',folder:'/Users/fjramos8/Nocturnal',description:'Reproductor de música avanzado PWA.',next:'Probar widget de música.'},
   {id:'p-news-intelligence',name:'News Intelligence',color:'#60a5fa',icon:'📰',status:'Prototipo',progress:0,priority:'Media',client:'Personal',folder:'/Users/fjramos8/News Intelligence',description:'Inteligencia de noticias.',next:'Explorar y definir alcance.'},
   {id:'p-personal-apps',name:'Personal Apps',color:'#a78bfa',icon:'📱',status:'Prototipo',progress:0,priority:'Media',client:'Personal',folder:'/Users/fjramos8/Personal Apps',description:'Aplicaciones personales.',next:'Revisar apps disponibles.'},
   {id:'p-trading-hub',name:'Trading Hub',color:'#34d399',icon:'📊',status:'Prototipo',progress:0,priority:'Media',client:'Trading',folder:'/Users/fjramos8/Trading Hub',description:'Versión documental de Trading Hub.',next:'Aclarar relación con TH Pro.'},
   {id:'p-audio-app',name:'Audio App (Audioteka)',color:'#94a3b8',icon:'🎤',status:'Prototipo',progress:0,priority:'Media',client:'Personal',folder:'/Users/fjramos8/Audioteka',description:'Aplicación de audio.',next:'Evaluar estado.'},
-  {id:'p-batchcooking',name:'Batchcooking Firebase',color:'#ec4899',icon:'🍳',status:'Prototipo',progress:0,priority:'Media',client:'Personal',folder:'/Users/fjramos8/Batchcooking',githubLink:'https://github.com/fjramos8/batchcooking',description:'App de batchcooking con Firebase.',next:'Verificar conexión a DB.'},
+  {id:'p-batchcooking',name:'Batchcooking Firebase',color:'#ec4899',icon:'🍳',status:'Prototipo',progress:0,priority:'Media',client:'Personal',folder:'/Users/fjramos8/Batchcooking',description:'App de batchcooking con Firebase.',next:'Verificar conexión a DB.'},
   {id:'p-bookshelf',name:'BookShelf',color:'#14b8a6',icon:'📚',status:'Prototipo',progress:0,priority:'Media',client:'Personal',folder:'/Users/fjramos8/BookShelf',description:'Gestión de libros.',next:'Revisar funcionalidades.'},
   {id:'p-comando-thp',name:'Comando THP',color:'#8b5cf6',icon:'⚙️',status:'Prototipo',progress:0,priority:'Media',client:'Trading',folder:'/Users/fjramos8/Comando THP',description:'Scripts de comandos THP.',next:'Consolidar scripts.'},
   {id:'p-comandos-terminal',name:'Comandos Terminal',color:'#f97316',icon:'🖥️',status:'Prototipo',progress:0,priority:'Baja',client:'Utilidades',folder:'/Users/fjramos8/Comandos Terminal',description:'Comandos de terminal útiles.',next:'Documentar comandos.'},
@@ -1122,17 +1126,17 @@ const SEED_PROJECTS = [
   {id:'p-trading-hub-projects',name:'Trading Hub Pro Projects',color:'#34d399',icon:'📂',status:'Prototipo',progress:0,priority:'Media',client:'Trading',folder:'/Users/fjramos8/THP Projects',description:'Satélites de TH Pro.',next:'Verificar relación con repo principal.'},
   {id:'p-vozia',name:'VOZIA + Biblioteca',color:'#ec4899',icon:'🎙️',status:'Prototipo',progress:20,priority:'Media',client:'IA / Audio',folder:'/Users/fjramos8/VOZIA',description:'Proyecto Vozia y biblioteca.',next:'Revisar contenido.'},
   {id:'p-wbhub-total',name:'WbHub Total',color:'#60a5fa',icon:'🌍',status:'Prototipo',progress:30,priority:'Media',client:'WebHub',link:'http://localhost:3000',folder:'/Users/fjramos8/WbHub Total',description:'Versión Total de WebHub.',next:'Analizar alcance.'},
-  {id:'p-chefsense',name:'ChefSense Final',color:'#14b8a6',icon:'👨‍🍳',status:'Lanzado',progress:85,priority:'Media',client:'Cocina / IA',link:'http://localhost:5500',folder:'/Users/fjramos8/ChefSense',githubLink:'https://github.com/fjramos8/chefsense',description:'App de recetas con IA.',next:'Publicar y evaluar integración.'},
-  {id:'p-nutritrack',name:'NutriTrack Pro',color:'#2dd4a0',icon:'🥗',status:'Activo',progress:64,priority:'Media',client:'Salud / nutrición',link:'http://localhost:3200',folder:'/Users/fjramos8/NutriTrack',githubLink:'https://github.com/fjramos8/nutritrack',description:'App de seguimiento nutricional.',next:'Añadir panel de objetivos.'},
-  {id:'p-davin-v4',name:'DaViN IA Studio Pro v4',color:'#7c5cfc',icon:'🤖',status:'Activo',progress:45,priority:'Alta',client:'IA creativa',link:'http://localhost:8000',folder:'/Users/fjramos8/DaViN/v4',githubLink:'https://github.com/fjramos8/davin-v4',description:'Estudio IA DaViN v4.',next:'Definir diferencias con v3.'},
+  {id:'p-chefsense',name:'ChefSense Final',color:'#14b8a6',icon:'👨‍🍳',status:'Lanzado',progress:85,priority:'Media',client:'Cocina / IA',link:'http://localhost:5500',folder:'/Users/fjramos8/ChefSense',description:'App de recetas con IA.',next:'Publicar y evaluar integración.'},
+  {id:'p-nutritrack',name:'NutriTrack Pro',color:'#2dd4a0',icon:'🥗',status:'Activo',progress:64,priority:'Media',client:'Salud / nutrición',link:'http://localhost:3200',folder:'/Users/fjramos8/NutriTrack',description:'App de seguimiento nutricional.',next:'Añadir panel de objetivos.'},
+  {id:'p-davin-v4',name:'DaViN IA Studio Pro v4',color:'#7c5cfc',icon:'🤖',status:'Activo',progress:45,priority:'Alta',client:'IA creativa',link:'http://localhost:8000',folder:'/Users/fjramos8/DaViN/v4',description:'Estudio IA DaViN v4.',next:'Definir diferencias con v3.'},
   {id:'p-davin-v3',name:'DaViN IA Studio Pro v3',color:'#8b5cf6',icon:'🧠',status:'En pausa',progress:55,priority:'Media',client:'IA creativa',folder:'/Users/fjramos8/DaViN/v3',description:'Estudio IA DaViN v3.',next:'Fusionar lo mejor en v4.'},
   {id:'p-davin-pro',name:'DaViN IA Studio Pro',color:'#a78bfa',icon:'💡',status:'En pausa',progress:42,priority:'Baja',client:'IA creativa',folder:'/Users/fjramos8/DaViN/Pro',description:'Iteración Pro previa.',next:'Marcar funcionalidades rescatables.'},
   {id:'p-davin-base',name:'DaViN IA Studio',color:'#94a3b8',icon:'🔬',status:'En pausa',progress:38,priority:'Baja',client:'IA creativa',folder:'/Users/fjramos8/DaViN/Base',description:'Base funcional DaViN.',next:'Documentar aprendizajes.'},
   {id:'p-davin-premium',name:'DaViN IA Premium',color:'#f59e0b',icon:'⭐',status:'En pausa',progress:48,priority:'Baja',client:'IA premium',folder:'/Users/fjramos8/DaViN/Premium',description:'Variante premium con PWA.',next:'Decidir si fusionar con v4.'},
-  {id:'p-nexus-pwa',name:'Nexus v38 PWA',color:'#f05c5c',icon:'🔗',status:'Activo',progress:60,priority:'Alta',client:'Sistema personal',link:'http://localhost:5000',folder:'/Users/fjramos8/Nexus/v38',githubLink:'https://github.com/fjramos8/nexus-v38',description:'PWA del sistema Nexus v38.',next:'Verificar service worker.'},
+  {id:'p-nexus-pwa',name:'Nexus v38 PWA',color:'#f05c5c',icon:'🔗',status:'Activo',progress:60,priority:'Alta',client:'Sistema personal',link:'http://localhost:5000',folder:'/Users/fjramos8/Nexus/v38',description:'PWA del sistema Nexus v38.',next:'Verificar service worker.'},
   {id:'p-nexus-system',name:'Nexus System Actualizado',color:'#fb923c',icon:'🔄',status:'Activo',progress:55,priority:'Alta',client:'Sistema personal',folder:'/Users/fjramos8/Nexus/System',description:'Sistema Nexus actualizado.',next:'Sincronizar con v38 PWA.'},
   {id:'p-nexus-docs',name:'Nexus Webs Documental',color:'#22d3ee',icon:'📑',status:'En pausa',progress:35,priority:'Media',client:'Documentación',folder:'/Users/fjramos8/Nexus/Docs',description:'Capa documental Nexus.',next:'Integrar con Link Organizer.'},
-  {id:'p-agentes-bots',name:'Agentes y Bots Pro',color:'#7c5cfc',icon:'🤖',status:'Activo',progress:50,priority:'Alta',client:'IA / automatización',folder:'/Users/fjramos8/Agentes Bots',githubLink:'https://github.com/fjramos8/agentes-bots',description:'Sistema de agentes y bots.',next:'Definir arquitectura de comunicación.'},
+  {id:'p-agentes-bots',name:'Agentes y Bots Pro',color:'#7c5cfc',icon:'🤖',status:'Activo',progress:50,priority:'Alta',client:'IA / automatización',folder:'/Users/fjramos8/Agentes Bots',description:'Sistema de agentes y bots.',next:'Definir arquitectura de comunicación.'},
   {id:'p-multi-agente',name:'Multi Agente',color:'#60a5fa',icon:'🧠',status:'Prototipo',progress:30,priority:'Media',client:'IA multi-agente',folder:'/Users/fjramos8/Multi Agente',description:'Sistema multi-agente experimental.',next:'Fusionar con Agentes y Bots.'},
   {id:'p-n8n',name:'n8n Automation',color:'#ec4899',icon:'⚡',status:'Activo',progress:45,priority:'Alta',client:'Automatización',link:'http://localhost:5678',folder:'/Users/fjramos8/n8n',description:'Flujos de automatización n8n.',next:'Documentar flujos activos.'},
   {id:'p-user-proxy',name:'UserProxy',color:'#14b8a6',icon:'🔀',status:'Prototipo',progress:20,priority:'Media',client:'IA / proxy',folder:'/Users/fjramos8/UserProxy',description:'Sistema proxy de usuario IA.',next:'Definir protocolo de comunicación.'},
@@ -1144,26 +1148,26 @@ const SEED_PROJECTS = [
   {id:'p-news-intel2',name:'News Intelligence (v2)',color:'#f472b6',icon:'📡',status:'Activo',progress:45,priority:'Alta',client:'Información / IA',folder:'/Users/fjramos8/News Intelligence v2',description:'Análisis de noticias v2.',next:'Conectar con Trading Hub Pro.'},
   {id:'p-personal-apps2',name:'Personal Apps (v2)',color:'#94a3b8',icon:'📱',status:'Activo',progress:40,priority:'Media',client:'Personal',folder:'/Users/fjramos8/Personal Apps v2',description:'Apps personales v2.',next:'Catalogar apps activas.'},
   {id:'p-trading-hub-docs',name:'Trading Hub (Docs)',color:'#f59e0b',icon:'📁',status:'En pausa',progress:35,priority:'Media',client:'Trading',folder:'/Users/fjramos8/Trading Hub Docs',description:'Versión anterior en Documents.',next:'Evaluar qué rescatar.'},
-  {id:'p-gestor-gastos',name:'Gestor de Gastos Personal',color:'#f05c5c',icon:'💳',status:'Prototipo',progress:15,priority:'Media',client:'Finanzas',link:'http://localhost:7200',folder:'/Users/fjramos8/Gestor Gastos',githubLink:'https://github.com/fjramos8/gestor-gastos',description:'App para registro de gastos personales.',next:'Definir modelo de datos.'},
-  {id:'p-mcp-servers',name:'MCP Servers',color:'#7c5cfc',icon:'🔌',status:'Activo',progress:30,priority:'Alta',client:'IA',folder:'/Users/fjramos8/MCP Servers',githubLink:'https://github.com/fjramos8/mcp-servers',description:'Servidores MCP personalizados.',next:'Documentar protocolo.'},
-  {id:'p-portfolio-web',name:'Portfolio Web Personal',color:'#a78bfa',icon:'🌐',status:'Lanzado',progress:95,priority:'Alta',client:'Personal',link:'https://fjramos8.dev',folder:'/Users/fjramos8/Portfolio',githubLink:'https://github.com/fjramos8/portfolio',netlifyLink:'https://app.netlify.com/sites/fjramos8',description:'Sitio web personal con portfolio.',next:'Añadir sección de proyectos.'},
+  {id:'p-gestor-gastos',name:'Gestor de Gastos Personal',color:'#f05c5c',icon:'💳',status:'Prototipo',progress:15,priority:'Media',client:'Finanzas',link:'http://localhost:7200',folder:'/Users/fjramos8/Gestor Gastos',description:'App para registro de gastos personales.',next:'Definir modelo de datos.'},
+  {id:'p-mcp-servers',name:'MCP Servers',color:'#7c5cfc',icon:'🔌',status:'Activo',progress:30,priority:'Alta',client:'IA',folder:'/Users/fjramos8/MCP Servers',description:'Servidores MCP personalizados.',next:'Documentar protocolo.'},
+  {id:'p-portfolio-web',name:'Portfolio Web Personal',color:'#a78bfa',icon:'🌐',status:'Lanzado',progress:95,priority:'Alta',client:'Personal',link:'https://fjramos8.dev',folder:'/Users/fjramos8/Portfolio',description:'Sitio web personal con portfolio.',next:'Añadir sección de proyectos.'},
   {id:'p-inventario-apps',name:'Inventario de Apps',color:'#94a3b8',icon:'📋',status:'Activo',progress:60,priority:'Alta',client:'Project OS',link:'http://localhost:5555',folder:'/Users/fjramos8/Inventario Apps',description:'Base de datos de apps personales.',next:'Completar fichas de apps.'},
-  {id:'p-ia-templates',name:'Plantillas IA',color:'#8b5cf6',icon:'🧠',status:'Activo',progress:70,priority:'Media',client:'IA',folder:'/Users/fjramos8/IA Plantillas',githubLink:'https://github.com/fjramos8/ia-templates',description:'Plantillas de prompts y agentes IA.',next:'Añadir plantillas Daily Review.'},
+  {id:'p-ia-templates',name:'Plantillas IA',color:'#8b5cf6',icon:'🧠',status:'Activo',progress:70,priority:'Media',client:'IA',folder:'/Users/fjramos8/IA Plantillas',description:'Plantillas de prompts y agentes IA.',next:'Añadir plantillas Daily Review.'},
   {id:'p-dashboard-unificado',name:'Dashboard Unificado',color:'#2dd4a0',icon:'📊',status:'Prototipo',progress:25,priority:'Alta',client:'Project OS',link:'http://localhost:7777',folder:'/Users/fjramos8/Dashboard Unificado',description:'Dashboard de métricas unificadas.',next:'Definir KPIs principales.'},
-  {id:'p-scripts-automatizacion',name:'Scripts de Automatización',color:'#f59e0b',icon:'⚡',status:'Activo',progress:55,priority:'Media',client:'Automatización',folder:'/Users/fjramos8/Scripts Auto',githubLink:'https://github.com/fjramos8/automation-scripts',description:'Scripts de automatización del sistema.',next:'Documentar cada script.'},
-  {id:'p-api-personal',name:'API Personal',color:'#60a5fa',icon:'🔗',status:'Prototipo',progress:20,priority:'Media',client:'Backend',link:'http://localhost:9000',folder:'/Users/fjramos8/API Personal',githubLink:'https://github.com/fjramos8/api-personal',description:'API unificada para proyectos personales.',next:'Definir endpoints prioritarios.'},
-  {id:'p-notion-mcp',name:'Notion MCP Bridge',color:'#34d399',icon:'📝',status:'Prototipo',progress:40,priority:'Alta',client:'IA',folder:'/Users/fjramos8/Notion MCP',githubLink:'https://github.com/fjramos8/notion-mcp',description:'Puente MCP para Notion.',next:'Probar conexión con agente.'},
+  {id:'p-scripts-automatizacion',name:'Scripts de Automatización',color:'#f59e0b',icon:'⚡',status:'Activo',progress:55,priority:'Media',client:'Automatización',folder:'/Users/fjramos8/Scripts Auto',description:'Scripts de automatización del sistema.',next:'Documentar cada script.'},
+  {id:'p-api-personal',name:'API Personal',color:'#60a5fa',icon:'🔗',status:'Prototipo',progress:20,priority:'Media',client:'Backend',link:'http://localhost:9000',folder:'/Users/fjramos8/API Personal',description:'API unificada para proyectos personales.',next:'Definir endpoints prioritarios.'},
+  {id:'p-notion-mcp',name:'Notion MCP Bridge',color:'#34d399',icon:'📝',status:'Prototipo',progress:40,priority:'Alta',client:'IA',folder:'/Users/fjramos8/Notion MCP',description:'Puente MCP para Notion.',next:'Probar conexión con agente.'},
   {id:'p-graficos-lib',name:'Librería de Gráficos',color:'#f472b6',icon:'📈',status:'Prototipo',progress:35,priority:'Baja',client:'Utilidades',folder:'/Users/fjramos8/Graficos Lib',description:'Componentes de gráficos reutilizables.',next:'Extraer de Flow Hub a librería.'},
   {id:'p-habit-tracker',name:'Habit Tracker Pro',color:'#22d3ee',icon:'🔥',status:'Activo',progress:50,priority:'Media',client:'Salud',link:'http://localhost:4400',folder:'/Users/fjramos8/Habit Tracker',description:'Seguimiento de hábitos con rachas.',next:'Añadir notificaciones push.'},
-  {id:'p-markdown-wiki',name:'Markdown Wiki',color:'#f97316',icon:'📚',status:'Activo',progress:65,priority:'Media',client:'Documentación',link:'http://localhost:6600',folder:'/Users/fjramos8/Markdown Wiki',githubLink:'https://github.com/fjramos8/md-wiki',description:'Wiki personal en Markdown.',next:'Añadir exportación PDF.'},
+  {id:'p-markdown-wiki',name:'Markdown Wiki',color:'#f97316',icon:'📚',status:'Activo',progress:65,priority:'Media',client:'Documentación',link:'http://localhost:6600',folder:'/Users/fjramos8/Markdown Wiki',description:'Wiki personal en Markdown.',next:'Añadir exportación PDF.'},
   {id:'p-gestor-pass',name:'Gestor de Contraseñas',color:'#ec4899',icon:'🔐',status:'Prototipo',progress:10,priority:'Baja',client:'Seguridad',folder:'/Users/fjramos8/Gestor Pass',description:'Gestor de contraseñas local.',next:'Definir esquema de cifrado.'},
-  {id:'p-asistente-ia-local',name:'Asistente IA Local',color:'#7c5cfc',icon:'🤖',status:'Prototipo',progress:15,priority:'Media',client:'IA',folder:'/Users/fjramos8/Asistente IA',githubLink:'https://github.com/fjramos8/asistente-ia-local',description:'Asistente IA con Ollama local.',next:'Probar conexión con Ollama.'},
-  {id:'p-firebase-utils',name:'Firebase Utils',color:'#f59e0b',icon:'🔥',status:'Activo',progress:45,priority:'Media',client:'Infraestructura',folder:'/Users/fjramos8/Firebase Utils',githubLink:'https://github.com/fjramos8/firebase-utils',description:'Utilidades para Firebase.',next:'Documentar funciones Cloud.'},
+  {id:'p-asistente-ia-local',name:'Asistente IA Local',color:'#7c5cfc',icon:'🤖',status:'Prototipo',progress:15,priority:'Media',client:'IA',folder:'/Users/fjramos8/Asistente IA',description:'Asistente IA con Ollama local.',next:'Probar conexión con Ollama.'},
+  {id:'p-firebase-utils',name:'Firebase Utils',color:'#f59e0b',icon:'🔥',status:'Activo',progress:45,priority:'Media',client:'Infraestructura',folder:'/Users/fjramos8/Firebase Utils',description:'Utilidades para Firebase.',next:'Documentar funciones Cloud.'},
   {id:'p-calendario-agente',name:'Calendario con Agente IA',color:'#60a5fa',icon:'📅',status:'Prototipo',progress:20,priority:'Media',client:'IA',folder:'/Users/fjramos8/Calendario IA',description:'Calendario inteligente con IA.',next:'Integrar con Google Calendar.'},
-  {id:'p-data-viz',name:'Data Visualization Lab',color:'#14b8a6',icon:'📊',status:'Prototipo',progress:30,priority:'Baja',client:'Datos',folder:'/Users/fjramos8/Data Viz',githubLink:'https://github.com/fjramos8/data-viz-lab',description:'Laboratorio de visualización de datos.',next:'Crear visualizaciones de ejemplo.'},
+  {id:'p-data-viz',name:'Data Visualization Lab',color:'#14b8a6',icon:'📊',status:'Prototipo',progress:30,priority:'Baja',client:'Datos',folder:'/Users/fjramos8/Data Viz',description:'Laboratorio de visualización de datos.',next:'Crear visualizaciones de ejemplo.'},
   {id:'p-monitoring',name:'Monitoring Dashboard',color:'#f05c5c',icon:'📡',status:'Prototipo',progress:25,priority:'Media',client:'Infraestructura',link:'http://localhost:9090',folder:'/Users/fjramos8/Monitoring',description:'Dashboard de monitoreo de servicios.',next:'Conectar con n8n.'},
-  {id:'p-pwa-kit',name:'PWA Starter Kit',color:'#8b5cf6',icon:'📱',status:'Prototipo',progress:40,priority:'Baja',client:'Utilidades',folder:'/Users/fjramos8/PWA Kit',githubLink:'https://github.com/fjramos8/pwa-starter',description:'Kit de inicio para PWAs.',next:'Publicar en GitHub.'},
-  {id:'p-cli-tools',name:'CLI Personal Tools',color:'#94a3b8',icon:'🖥️',status:'Activo',progress:50,priority:'Media',client:'Utilidades',folder:'/Users/fjramos8/CLI Tools',githubLink:'https://github.com/fjramos8/cli-tools',description:'Herramientas CLI personales.',next:'Añadir comando quick-add.'},
+  {id:'p-pwa-kit',name:'PWA Starter Kit',color:'#8b5cf6',icon:'📱',status:'Prototipo',progress:40,priority:'Baja',client:'Utilidades',folder:'/Users/fjramos8/PWA Kit',description:'Kit de inicio para PWAs.',next:'Publicar en GitHub.'},
+  {id:'p-cli-tools',name:'CLI Personal Tools',color:'#94a3b8',icon:'🖥️',status:'Activo',progress:50,priority:'Media',client:'Utilidades',folder:'/Users/fjramos8/CLI Tools',description:'Herramientas CLI personales.',next:'Añadir comando quick-add.'},
 ];
 
 const SEED_TASKS = [
@@ -1568,10 +1572,10 @@ function renderAllProjects() {
         <span class="proj-card-tag" style="background:var(--s3);color:var(--t3)">${taskCount} tareas</span>
       </div>
       <div class="proj-card-actions" onclick="event.stopPropagation()">
-        ${p.link ? `<a class="proj-card-btn" href="${esc(p.link)}" target="_blank" rel="noreferrer">🌐 Web</a>` : ''}
-        ${p.folder ? `<a class="proj-card-btn" href="${esc(p.folder)}" target="_blank" rel="noreferrer">📁 App</a>` : ''}
-        ${p.githubLink ? `<a class="proj-card-btn" href="${esc(p.githubLink)}" target="_blank" rel="noreferrer" style="color:#6e5494">GitHub</a>` : ''}
-        ${p.netlifyLink ? `<a class="proj-card-btn" href="${esc(p.netlifyLink)}" target="_blank" rel="noreferrer" style="color:#00ad9f">Netlify</a>` : ''}
+        ${p.link ? `<span class="proj-card-btn" style="cursor:pointer" onclick="openLink('${esc(p.link)}')">🌐 Web</span>` : ''}
+        ${p.folder ? `<span class="proj-card-btn" style="cursor:pointer" onclick="openLink('${esc(p.folder)}')">📁 App</span>` : ''}
+        ${p.githubLink ? `<span class="proj-card-btn" style="cursor:pointer;color:#6e5494" onclick="openLink('${esc(p.githubLink)}')">GitHub</span>` : ''}
+        ${p.netlifyLink ? `<span class="proj-card-btn" style="cursor:pointer;color:#00ad9f" onclick="openLink('${esc(p.netlifyLink)}')">Netlify</span>` : ''}
         <span class="proj-card-btn" onclick="openProjectLinks('${p.id}')" style="cursor:pointer;opacity:.5">✏️</span>
       </div>
       <div class="proj-card-progress"><div class="proj-card-progress-fill" style="width:${Math.min(100,Number(p.progress||0))}%;background:${p.color}"></div></div>
@@ -1652,10 +1656,10 @@ function renderProjectList(p) {
       ${p.progress !== undefined ? `<span class="filter-chip" style="cursor:default;background:var(--s3);border-color:transparent;color:var(--t2)">${p.progress}%</span>` : ''}
     </div>
     <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
-      ${p.link ? `<a class="tb-btn" href="${esc(p.link)}" target="_blank" rel="noreferrer" style="text-decoration:none">🌐 Web</a>` : ''}
-      ${p.folder ? `<a class="tb-btn" href="${esc(p.folder)}" target="_blank" rel="noreferrer" style="text-decoration:none">📁 App</a>` : ''}
-      ${p.githubLink ? `<a class="tb-btn" href="${esc(p.githubLink)}" target="_blank" rel="noreferrer" style="text-decoration:none;color:#6e5494">🐙 GitHub</a>` : ''}
-      ${p.netlifyLink ? `<a class="tb-btn" href="${esc(p.netlifyLink)}" target="_blank" rel="noreferrer" style="text-decoration:none;color:#00ad9f">▲ Netlify</a>` : ''}
+      ${p.link ? `<span class="tb-btn" style="cursor:pointer" onclick="event.stopPropagation();openLink('${esc(p.link)}')">🌐 Web</span>` : ''}
+      ${p.folder ? `<span class="tb-btn" style="cursor:pointer" onclick="event.stopPropagation();openLink('${esc(p.folder)}')">📁 App</span>` : ''}
+      ${p.githubLink ? `<span class="tb-btn" style="cursor:pointer;color:#6e5494" onclick="event.stopPropagation();openLink('${esc(p.githubLink)}')">🐙 GitHub</span>` : ''}
+      ${p.netlifyLink ? `<span class="tb-btn" style="cursor:pointer;color:#00ad9f" onclick="event.stopPropagation();openLink('${esc(p.netlifyLink)}')">▲ Netlify</span>` : ''}
       <button class="tb-btn" onclick="event.stopPropagation();openProjectLinks('${p.id}')" style="opacity:.6">✏️</button>
     </div>
     ${p.next ? `<div style="padding:8px 12px;background:var(--s3);border-radius:var(--rsm);margin-bottom:12px;font-size:13px"><span style="color:var(--t3)">▶ Próximo paso:</span> <span style="color:var(--t1);font-weight:500">${esc(p.next)}</span></div>` : ''}
@@ -3167,8 +3171,9 @@ function init() {
       if(exist) {
         if(!exist.link && p.link) exist.link = p.link;
         if(!exist.folder && p.folder) exist.folder = p.folder;
-        if(!exist.githubLink && p.githubLink) exist.githubLink = p.githubLink;
-        if(!exist.netlifyLink && p.netlifyLink) exist.netlifyLink = p.netlifyLink;
+        // Clean up fake github/netlify from old seed
+        if(exist.githubLink && exist.githubLink.indexOf('github.com/fjramos8/')>0) delete exist.githubLink;
+        if(exist.netlifyLink && exist.netlifyLink.indexOf('netlify.com/sites/fjramos8')>0) delete exist.netlifyLink;
       } else {
         state.projects.push({...p, createdAt:Date.now()});
       }
